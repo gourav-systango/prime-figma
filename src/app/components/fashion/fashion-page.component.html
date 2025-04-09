@@ -1,0 +1,33 @@
+<main class="fashion-page">
+  <section class="fashion-hero">
+    <div class="container">
+      <h1>Fashion That Speaks Your Style</h1>
+      <p>Discover the latest trends and timeless pieces in our fashion collection</p>
+    </div>
+  </section>
+
+  <section class="fashion-items">
+    <div class="container">
+      <div class="fashion-grid">
+        @for (item of fashionItems; track item.id) {
+          <div class="fashion-item">
+            <div class="image-container">
+              <img [src]="item.imagePath" [alt]="item.title">
+            </div>
+            <div class="item-details">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+              <div class="price-explore">
+                <span class="price">{{ item.price }}</span>
+                <a href="#" class="explore-link">
+                  Explore Now!
+                  <img src="images/arrow.svg" alt="Arrow right" class="arrow-icon">
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</main> 

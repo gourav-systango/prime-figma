@@ -1,0 +1,50 @@
+<section class="app-download-section section-padding bg-white relative overflow-hidden">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <!-- Left Content -->
+      <div class="max-w-lg">
+        <h2 class="text-[48px] font-black leading-[1.5] tracking-[0.06em] text-black mb-10">
+          DOWNLOAD APP &<br>GET THE VOUCHER!
+        </h2>
+        
+        <p class="text-[24px] font-medium leading-[1.458] tracking-[-0.04em] text-[#7C7C7C] mb-12">
+          Get 30% off for first transaction using Rondovision mobile app for now.
+        </p>
+        
+        <div class="flex flex-wrap gap-5">
+          <a *ngFor="let store of storeLinks" 
+             [href]="store.url" 
+             class="block transition-transform hover:scale-105">
+            <img [src]="store.imageSrc" 
+                 [alt]="store.altText" 
+                 class="h-16 rounded-[10px]">
+          </a>
+        </div>
+      </div>
+      
+      <!-- Right Image -->
+      <div class="relative flex justify-center">
+        <div class="relative z-10">
+          <img src="images/mobile-mockup.png" alt="Mobile App" class="max-w-full h-auto drop-shadow-2xl">
+          
+          <!-- Decorative elements -->
+          <div class="ellipses">
+            <!-- Large circles -->
+            <div class="absolute -top-8 -left-8 w-40 h-40 rounded-full border-[2.5px] border-[#EFECEB] opacity-80"></div>
+            <div class="absolute top-1/4 -right-6 w-32 h-32 rounded-full border-[2.1px] border-[#EFECEB] opacity-80"></div>
+            <div class="absolute bottom-10 left-1/3 w-24 h-24 rounded-full border-[1.7px] border-[#EFECEB] opacity-80"></div>
+            
+            <!-- Colored dots -->
+            <div class="absolute top-1/3 -right-4 w-12 h-12 rounded-full bg-[#EBD96B]"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-16 h-16 rounded-full bg-[#ECE8E7]"></div>
+            <div class="absolute bottom-1/3 right-1/4 w-10 h-10 rounded-full bg-[#89807A]"></div>
+            
+            <!-- Additional small circles for detail -->
+            <div class="absolute top-2/3 left-0 w-5 h-5 rounded-full bg-[#EBD96B] opacity-60"></div>
+            <div class="absolute bottom-0 right-1/3 w-8 h-8 rounded-full bg-[#ECE8E7] opacity-40"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

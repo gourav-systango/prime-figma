@@ -1,0 +1,39 @@
+<section class="newsletter-section section-padding bg-[#E5C643] relative">
+  <div class="container mx-auto px-4">
+    <div class="max-w-5xl mx-auto text-center">
+      <!-- Newsletter Title -->
+      <h2 class="text-[55px] font-black leading-[1.27] tracking-[0.03em] text-white mb-6 md:mb-8">
+        JOIN SHOPPING COMMUNITY TO GET MONTHLY PROMO
+      </h2>
+      
+      <!-- Newsletter Description -->
+      <p class="text-[32px] font-normal leading-[1.09] tracking-[0.03em] text-[#FFFCF8] mb-10 md:mb-12">
+        Type your email down below and be young wild generation
+      </p>
+      
+      <!-- Newsletter Form -->
+      <form [formGroup]="newsletterForm" (ngSubmit)="onSubmit()" class="flex flex-col md:flex-row gap-4 max-w-3xl mx-auto">
+        <div class="relative flex-grow">
+          <input 
+            type="email" 
+            formControlName="email"
+            placeholder="Add your email here" 
+            class="w-full bg-white rounded-[10px] px-6 py-4 text-[24px] leading-[1.45] tracking-[0.03em] text-[#767676] focus:outline-none"
+            [ngClass]="{'border-red-500': newsletterForm.get('email')?.invalid && newsletterForm.get('email')?.touched}"
+          >
+          <div *ngIf="newsletterForm.get('email')?.invalid && newsletterForm.get('email')?.touched" class="text-red-500 text-left mt-1">
+            <span *ngIf="newsletterForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="newsletterForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
+        <button 
+          type="submit" 
+          [disabled]="newsletterForm.invalid"
+          class="bg-black rounded-[8px] px-8 py-4 text-[33px] font-medium leading-[1.06] tracking-[0.03em] text-white uppercase hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

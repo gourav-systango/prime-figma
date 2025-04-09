@@ -1,1 +1,90 @@
 /* You can add global styles to this file, and also import other style files */
+@use "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Custom colors based on Figma design */
+:root {
+  --primary-yellow: #EBD96B;
+  --primary-black: #000000;
+  --primary-white: #FFFFFF;
+  --text-gray: #242323;
+  --text-light-gray: #7C7C7C;
+  --text-lighter-gray: #8E8E8E;
+  --background-gray: #F4F6F5;
+}
+
+/* Typography Classes */
+.heading-xl {
+  @apply text-[96px] font-black leading-[1.25] tracking-normal;
+}
+
+.heading-lg {
+  @apply text-[55px] font-black leading-[1.27] tracking-[0.03em];
+}
+
+.heading-md {
+  @apply text-[48px] font-black leading-[1.04] tracking-[0.06em];
+}
+
+.heading-sm {
+  @apply text-[40px] font-black leading-[1.5] tracking-[0.03em];
+}
+
+.body-lg {
+  @apply text-[32px] font-normal leading-[1.5] tracking-[-0.05em];
+}
+
+.body-md {
+  @apply text-[24px] font-medium leading-[1.5] tracking-[-0.03em];
+}
+
+.body-sm {
+  @apply text-[22px] font-medium leading-[1.5] tracking-[0.01em];
+}
+
+/* Button Styles */
+.btn-primary {
+  @apply bg-black text-white font-medium rounded-[7px] px-6 py-2 hover:bg-gray-900 transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-[#EBD96B] text-black font-medium rounded-[7px] px-6 py-2 hover:bg-[#e0cc5f] transition-colors;
+}
+
+/* Section Styles */
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+/* Card Styles */
+.card {
+  @apply bg-white rounded-[20px] overflow-hidden shadow-sm;
+}
+
+/* Image Styles */
+.img-cover {
+  @apply w-full h-full object-cover;
+}
+
+/* Animation Classes */
+.transition-all {
+  @apply transition-all duration-300 ease-in-out;
+}

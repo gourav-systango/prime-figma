@@ -1,0 +1,93 @@
+.app-download-section {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(235, 217, 107, 0.1);
+    border-radius: 50%;
+    right: -100px;
+    top: -100px;
+    z-index: 0;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(235, 217, 107, 0.05);
+    border-radius: 50%;
+    left: -80px;
+    bottom: -80px;
+    z-index: 0;
+  }
+  
+  .ellipses {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    
+    div {
+      animation: float 6s ease-in-out infinite;
+      
+      &:nth-child(2n) {
+        animation-delay: 1s;
+      }
+      
+      &:nth-child(3n) {
+        animation-delay: 2s;
+      }
+      
+      &:nth-child(4n) {
+        animation-delay: 3s;
+      }
+    }
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  img[alt="Mobile App"] {
+    animation: device-float 8s ease-in-out infinite;
+    filter: drop-shadow(0 4px 63px rgba(0, 0, 0, 0.25));
+    max-height: 500px;
+    object-fit: contain;
+  }
+  
+  @keyframes device-float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  // Store badges hover effect
+  a {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+}
