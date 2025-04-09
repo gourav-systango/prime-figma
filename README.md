@@ -1,59 +1,76 @@
-# PrimeFigma
+# Prime Figma E-Commerce
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.0.
+A modern e-commerce web application built with Angular using a sleek, minimalist design. This project features comprehensive shopping experiences including fashion items, lifestyle products, and a user favorites system.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **Responsive Design**: Fully responsive layout that works on desktop, tablets, and mobile devices
+- **Product Categories**: Browse through different product categories including fashion and lifestyle
+- **Favorites**: Save products to your favorites list for later viewing
+- **Modern UI**: Clean and modern user interface with animations and transitions
 
-```bash
-ng serve
+## Tech Stack
+
+- **Framework**: Angular 17+
+- **Styling**: SCSS/Tailwind CSS
+- **State Management**: Angular's built-in services
+- **Routing**: Angular Router for navigation
+- **Assets**: High-quality product images
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14.15.0 or later)
+- npm (v6.14.0 or later)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/prime-figma.git
+   cd prime-figma
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   ng serve
+   ```
+
+4. Open your browser and navigate to `http://localhost:4200`
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── catalogue/       # Catalogue page components
+│   │   ├── fashion/         # Fashion page components
+│   │   ├── favourite/       # Favourites page components
+│   │   ├── landing/         # Landing page components
+│   │   ├── lifestyle/       # Lifestyle page components
+│   │   └── shared/          # Shared components (header, footer)
+│   ├── interfaces/          # TypeScript interfaces
+│   └── app.routes.ts        # Application routes
+├── assets/                  # Static assets
+└── public/                  # Public images and resources
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Contributing
 
-## Code scaffolding
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## License
 
-```bash
-ng generate component component-name
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Acknowledgments
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Design inspiration from modern fashion e-commerce websites
+- Images sourced from high-quality stock photo sites
