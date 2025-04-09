@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.container {
+  max-width: 1280px;
+}
+
+.prose {
+  h2 {
+    color: #000;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    color: #8E8E8E;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+  
+  ul {
+    color: #8E8E8E;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  a {
+    transition: color 0.3s ease, border-color 0.3s ease;
+    
+    &:hover {
+      color: #EBD96B;
+      border-color: #EBD96B;
+    }
+  }
+} 

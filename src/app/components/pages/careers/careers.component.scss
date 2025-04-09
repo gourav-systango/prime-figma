@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.container {
+  max-width: 1280px;
+}
+
+// Benefit cards hover effect
+.bg-\[\#F4F6F5\] {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Process steps hover effect
+.rounded-2xl.shadow-sm {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  }
+} 

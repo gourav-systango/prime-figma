@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.container {
+  max-width: 1280px;
+}
+
+// Style for prose content
+.prose {
+  h2 {
+    color: #000;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: #8E8E8E;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+  
+  a {
+    transition: color 0.3s ease, border-color 0.3s ease;
+    
+    &:hover {
+      color: #EBD96B;
+      border-color: #EBD96B;
+    }
+  }
+} 

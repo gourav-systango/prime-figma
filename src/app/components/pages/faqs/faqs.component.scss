@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.container {
+  max-width: 1280px;
+}
+
+// FAQ item animation
+.mb-4.border {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Category buttons
+button.py-2 {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+  }
+}
+
+// Input focus effect
+input:focus {
+  border-color: #EBD96B;
+  box-shadow: 0 0 0 2px rgba(235, 217, 107, 0.25);
+} 

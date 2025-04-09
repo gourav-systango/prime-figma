@@ -1,0 +1,135 @@
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">SHARE YOUR LOCATION</h1>
+      <p class="text-xl text-[#8E8E8E]">Help us provide you with the best shopping experience in your area.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-[#F4F6F5] rounded-2xl p-8 mb-12">
+        <h2 class="text-2xl font-bold mb-6">Enter Your Location</h2>
+        
+        <form (ngSubmit)="submitLocation()">
+          <div class="mb-6">
+            <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
+            <input 
+              type="text" 
+              id="address" 
+              name="address" 
+              [(ngModel)]="location.address"
+              placeholder="123 Fashion Street"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label for="city" class="block text-sm font-medium text-gray-700 mb-2">City</label>
+              <input 
+                type="text" 
+                id="city" 
+                name="city" 
+                [(ngModel)]="location.city"
+                placeholder="New York"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+                required
+              >
+            </div>
+            
+            <div>
+              <label for="state" class="block text-sm font-medium text-gray-700 mb-2">State/Province</label>
+              <input 
+                type="text" 
+                id="state" 
+                name="state" 
+                [(ngModel)]="location.state"
+                placeholder="NY"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+                required
+              >
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label for="zipCode" class="block text-sm font-medium text-gray-700 mb-2">Zip/Postal Code</label>
+              <input 
+                type="text" 
+                id="zipCode" 
+                name="zipCode" 
+                [(ngModel)]="location.zipCode"
+                placeholder="10001"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+                required
+              >
+            </div>
+            
+            <div>
+              <label for="country" class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+              <select 
+                id="country" 
+                name="country" 
+                [(ngModel)]="location.country"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+                required
+              >
+                <option value="United States">United States</option>
+                <option value="Canada">Canada</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Australia">Australia</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-between mt-8">
+            <button type="submit" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors">
+              Share Location
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-[#F4F6F5] rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4">Why Share Your Location?</h3>
+          <ul class="space-y-3 text-[#8E8E8E]">
+            <li class="flex items-start">
+              <span class="text-[#EBD96B] mr-2">•</span>
+              <span>Get personalized shopping recommendations</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-[#EBD96B] mr-2">•</span>
+              <span>See accurate shipping times and costs</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-[#EBD96B] mr-2">•</span>
+              <span>Find events and pop-up shops near you</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-[#EBD96B] mr-2">•</span>
+              <span>Receive notifications about local promotions</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-[#F4F6F5] rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4">Privacy Notice</h3>
+          <p class="text-[#8E8E8E] mb-4">
+            Your privacy is important to us. We only use your location information to enhance your shopping experience and provide relevant content.
+          </p>
+          <p class="text-[#8E8E8E]">
+            You can update or delete your location information at any time from your account settings.
+            See our <a routerLink="/privacy-policy" class="text-black font-semibold border-b border-[#EBD96B] hover:text-[#EBD96B] transition-colors">Privacy Policy</a> for more details.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

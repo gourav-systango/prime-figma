@@ -1,0 +1,151 @@
+<!-- Hero Section -->
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">ABOUT US</h1>
+      <p class="text-xl text-[#8E8E8E]">Discover the story behind FASHION and our mission to transform the way you experience style.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-16 bg-white text-[#8E8E8E]">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+      <div>
+        <h2 class="text-4xl font-bold mb-6">Our Mission</h2>
+        <p class="text-[#8E8E8E] mb-6 text-lg leading-relaxed">
+          At FASHION, we believe that style is a form of self-expression. Our mission is to provide high-quality, contemporary fashion that empowers individuals to express their unique personality and vision.
+        </p>
+        <p class="text-[#8E8E8E] mb-6 text-lg leading-relaxed">
+          We're committed to responsible practices throughout our supply chain, ensuring that our products are not only beautiful but also ethically produced with minimal environmental impact.
+        </p>
+        <div class="flex gap-4 mt-8">
+          <div class="text-center">
+            <div class="text-4xl font-bold text-black mb-2">5M+</div>
+            <p class="text-[#8E8E8E]">Happy Customers</p>
+          </div>
+          <div class="text-center">
+            <div class="text-4xl font-bold text-black mb-2">50+</div>
+            <p class="text-[#8E8E8E]">Countries Served</p>
+          </div>
+          <div class="text-center">
+            <div class="text-4xl font-bold text-black mb-2">200+</div>
+            <p class="text-[#8E8E8E]">Team Members</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-[#F4F6F5] rounded-2xl overflow-hidden h-[500px]">
+        <img src="images/about/mission.jpg" alt="Our mission" class="w-full h-full object-cover">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Our Story Timeline -->
+<section class="py-16 bg-[#F4F6F5] text-[#8E8E8E]">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold mb-12 text-center">Our Journey</h2>
+    
+    <div class="relative">
+      <!-- Vertical line -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-[#EBD96B]"></div>
+      
+      <!-- Timeline items -->
+      <div class="space-y-16">
+        <div *ngFor="let milestone of milestones; let i = index" 
+             class="relative z-10"
+             [ngClass]="{'ml-[50%] pl-8': i % 2 === 0, 'mr-[50%] pr-8 text-right': i % 2 !== 0}">
+          <!-- Dot on timeline -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-[#EBD96B] rounded-full border-4 border-white"></div>
+          
+          <!-- Content -->
+          <div class="bg-white p-6 rounded-xl shadow-sm">
+            <div class="text-xl font-bold mb-1">{{milestone.year}}</div>
+            <h3 class="text-2xl font-bold mb-3">{{milestone.title}}</h3>
+            <p class="text-[#8E8E8E]">{{milestone.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-16 bg-white text-[#8E8E8E]">
+  <div class="container mx-auto px-4">
+    <h2 class="text-4xl font-bold mb-12 text-center">Meet Our Team</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div *ngFor="let member of teamMembers" class="bg-[#F9F9F9] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <div class="h-[300px] overflow-hidden">
+          <img [src]="member.imageUrl" [alt]="member.name" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-1">{{member.name}}</h3>
+          <p class="text-[#EBD96B] font-medium mb-4">{{member.position}}</p>
+          <p class="text-[#8E8E8E]">{{member.bio}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-16 bg-black text-white text-[#8E8E8E]">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <h2 class="text-3xl font-bold mb-4">Our Core Values</h2>
+      <p class="text-[#8E8E8E]">The principles that guide everything we do at FASHION.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-[#1A1A1A] rounded-2xl p-6 text-center">
+        <div class="w-20 h-20 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-6">
+          <span class="text-black font-bold text-xl">01</span>
+        </div>
+        <h3 class="text-xl font-bold mb-4">Quality First</h3>
+        <p class="text-[#8E8E8E]">We're committed to creating products that stand the test of time, both in design and durability.</p>
+      </div>
+      
+      <div class="bg-[#1A1A1A] rounded-2xl p-6 text-center">
+        <div class="w-20 h-20 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-6">
+          <span class="text-black font-bold text-xl">02</span>
+        </div>
+        <h3 class="text-xl font-bold mb-4">Ethical Production</h3>
+        <p class="text-[#8E8E8E]">We ensure fair working conditions throughout our supply chain and continuously seek to minimize our environmental footprint.</p>
+      </div>
+      
+      <div class="bg-[#1A1A1A] rounded-2xl p-6 text-center">
+        <div class="w-20 h-20 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-6">
+          <span class="text-black font-bold text-xl">03</span>
+        </div>
+        <h3 class="text-xl font-bold mb-4">Customer Focus</h3>
+        <p class="text-[#8E8E8E]">Everything we do is designed to enhance your experience and help you express your unique style with confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Join Us CTA -->
+<section class="py-16 bg-[#F4F6F5] text-[#8E8E8E]">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-4">Join Our Fashion Journey</h2>
+    <p class="text-[#8E8E8E] max-w-2xl mx-auto mb-8">
+      Be part of our growing community and stay updated with the latest trends, collections, and exclusive offers.
+    </p>
+    
+    <div class="max-w-md mx-auto">
+      <div class="flex gap-2">
+        <input 
+          type="email" 
+          placeholder="Enter your email"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+        >
+        <button class="bg-black text-white font-bold py-3 px-6 rounded-lg whitespace-nowrap hover:bg-opacity-80 transition-colors">
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </div>
+</section> 

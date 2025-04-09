@@ -1,0 +1,116 @@
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">JOIN OUR TEAM</h1>
+      <p class="text-xl text-[#8E8E8E]">Be part of the future of fashion.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <!-- Why Join Us Section -->
+    <div class="max-w-4xl mx-auto mb-16">
+      <h2 class="text-3xl font-bold mb-8 text-center">Why Work With Us</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center p-6 bg-[#F4F6F5] rounded-2xl">
+          <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Competitive Salary</h3>
+          <p class="text-[#8E8E8E]">We offer industry-leading compensation packages and performance bonuses.</p>
+        </div>
+        
+        <div class="text-center p-6 bg-[#F4F6F5] rounded-2xl">
+          <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Career Growth</h3>
+          <p class="text-[#8E8E8E]">Develop your skills with mentorship programs and clear advancement opportunities.</p>
+        </div>
+        
+        <div class="text-center p-6 bg-[#F4F6F5] rounded-2xl">
+          <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Work-Life Balance</h3>
+          <p class="text-[#8E8E8E]">Flexible schedules, remote options, and generous vacation policies.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Open Positions -->
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold mb-8 text-center">Open Positions</h2>
+      
+      <div class="mb-8">
+        <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+          <h3 class="text-xl font-bold">Position</h3>
+          <div class="flex space-x-8">
+            <span class="text-[#8E8E8E] hidden md:inline">Department</span>
+            <span class="text-[#8E8E8E] hidden md:inline">Location</span>
+            <span class="text-[#8E8E8E] hidden md:inline">Type</span>
+          </div>
+        </div>
+        
+        <div *ngFor="let job of jobListings" class="py-6 border-b border-gray-200 hover:bg-[#F9F9F9] transition-colors">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <h4 class="text-lg font-bold mb-2 md:mb-0">{{job.title}}</h4>
+            <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0">
+              <span class="text-[#8E8E8E] md:w-32">{{job.department}}</span>
+              <span class="text-[#8E8E8E] md:w-32">{{job.location}}</span>
+              <span class="text-[#8E8E8E] md:w-24">{{job.type}}</span>
+              <a href="#" class="text-black font-bold hover:text-[#EBD96B] transition-colors md:ml-4">View Job</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <p class="text-[#8E8E8E] mb-4">Don't see a position that fits your skills?</p>
+        <a href="#" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors">
+          Send General Application
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-[#F4F6F5]">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h2 class="text-3xl font-bold mb-8 text-center">Our Hiring Process</h2>
+    
+    <div class="flex flex-col md:flex-row gap-8">
+      <div class="bg-white p-6 rounded-2xl shadow-sm flex-1 text-center">
+        <div class="w-12 h-12 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-black font-bold">1</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Application</h3>
+        <p class="text-[#8E8E8E]">Submit your resume and cover letter through our online portal.</p>
+      </div>
+      
+      <div class="bg-white p-6 rounded-2xl shadow-sm flex-1 text-center">
+        <div class="w-12 h-12 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-black font-bold">2</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Interview</h3>
+        <p class="text-[#8E8E8E]">Participate in a phone screening followed by in-person or video interviews.</p>
+      </div>
+      
+      <div class="bg-white p-6 rounded-2xl shadow-sm flex-1 text-center">
+        <div class="w-12 h-12 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-black font-bold">3</span>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Offer</h3>
+        <p class="text-[#8E8E8E]">Selected candidates will receive an offer letter with next steps.</p>
+      </div>
+    </div>
+  </div>
+</section> 

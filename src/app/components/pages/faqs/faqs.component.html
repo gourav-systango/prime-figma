@@ -1,0 +1,89 @@
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">FREQUENTLY ASKED QUESTIONS</h1>
+      <p class="text-xl text-[#8E8E8E]">Find answers to common questions about our products and services.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Categories -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12">
+        <button 
+          *ngFor="let category of categories"
+          [class.bg-black]="activeCategory === category.id" 
+          [class.text-white]="activeCategory === category.id"
+          [class.bg-[#F4F6F5]]="activeCategory !== category.id"
+          [class.text-black]="activeCategory !== category.id"
+          class="py-2 px-6 rounded-lg font-bold transition-colors"
+          (click)="setCategory(category.id)"
+        >
+          {{category.name}}
+        </button>
+      </div>
+      
+      <!-- FAQ Accordion -->
+      <div *ngIf="filteredFaqs.length > 0">
+        <div *ngFor="let faq of filteredFaqs" class="mb-4 border border-gray-200 rounded-xl overflow-hidden">
+          <div 
+            class="p-5 bg-[#F4F6F5] cursor-pointer flex justify-between items-center"
+            (click)="toggleFaq(faq)"
+          >
+            <h3 class="text-lg font-bold">{{faq.question}}</h3>
+            <div class="w-6 h-6 flex items-center justify-center">
+              <svg *ngIf="!faq.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+              <svg *ngIf="faq.isOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <div *ngIf="faq.isOpen" class="p-5 bg-white">
+            <p class="text-[#8E8E8E]">{{faq.answer}}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="filteredFaqs.length === 0" class="text-center py-10">
+        <p class="text-[#8E8E8E]">No FAQs found in this category.</p>
+      </div>
+      
+      <!-- Contact section -->
+      <div class="mt-16 bg-[#F4F6F5] rounded-2xl p-8 text-center">
+        <h2 class="text-2xl font-bold mb-4">Didn't Find Your Answer?</h2>
+        <p class="text-[#8E8E8E] mb-6 max-w-xl mx-auto">
+          If you couldn't find the answer to your question, our customer support team is here to help.
+        </p>
+        <a routerLink="/contact" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors inline-block">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Search Box -->
+<section class="py-16 bg-[#F4F6F5]">
+  <div class="container mx-auto px-4">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-2xl font-bold mb-6">Search Help Center</h2>
+      <div class="flex">
+        <input 
+          type="text" 
+          placeholder="Type your question here..." 
+          class="w-full px-4 py-3 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+        >
+        <button class="bg-black text-white font-bold py-3 px-8 rounded-r-lg hover:bg-opacity-80 transition-colors">
+          Search
+        </button>
+      </div>
+      <p class="text-[#8E8E8E] mt-4">
+        Popular searches: shipping, returns, sizing, payment
+      </p>
+    </div>
+  </div>
+</section> 

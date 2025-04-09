@@ -1,0 +1,72 @@
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">TRACK YOUR ORDER</h1>
+      <p class="text-xl text-[#8E8E8E]">Enter your order ID to check the status of your delivery.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4 max-w-3xl">
+    <div class="bg-[#F4F6F5] rounded-2xl p-8 mb-12">
+      <h2 class="text-2xl font-bold mb-6">Order Tracking</h2>
+      <div class="flex gap-4">
+        <input 
+          type="text" 
+          [(ngModel)]="trackingId"
+          placeholder="Enter your order ID"
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#EBD96B]"
+        >
+        <button 
+          (click)="trackOrder()"
+          class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors whitespace-nowrap">
+          Track
+        </button>
+      </div>
+      <p class="text-[#8E8E8E] mt-4">Your order ID can be found in your order confirmation email.</p>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6">How Order Tracking Works</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+          <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-black font-bold">1</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Enter Order ID</h3>
+          <p class="text-[#8E8E8E]">Enter the order ID from your confirmation email or account dashboard.</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+          <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-black font-bold">2</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Get Status</h3>
+          <p class="text-[#8E8E8E]">View your order's current status, from processing to out for delivery.</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+          <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-black font-bold">3</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Track Delivery</h3>
+          <p class="text-[#8E8E8E]">Follow your package in real-time with delivery estimates and locations.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#F4F6F5] rounded-2xl p-8">
+      <h2 class="text-2xl font-bold mb-6">Need Help?</h2>
+      <p class="text-[#8E8E8E] mb-4">If you're having trouble tracking your order or have any questions, our customer service team is here to help.</p>
+      <div class="flex gap-4">
+        <a routerLink="/contact" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors">
+          Contact Support
+        </a>
+        <a routerLink="/faqs" class="border border-black text-black font-bold py-3 px-8 rounded-lg hover:bg-black hover:text-white transition-colors">
+          View FAQs
+        </a>
+      </div>
+    </div>
+  </div>
+</section> 

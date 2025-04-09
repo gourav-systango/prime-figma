@@ -1,0 +1,131 @@
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">SIZE GUIDE</h1>
+      <p class="text-xl text-[#8E8E8E]">Find your perfect fit with our detailed size charts.</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Category Tabs -->
+      <div class="flex justify-center mb-12">
+        <div class="inline-flex bg-[#F4F6F5] rounded-lg p-1">
+          <button 
+            [class.bg-black]="activeCategory === 'women'"
+            [class.text-white]="activeCategory === 'women'"
+            [class.bg-transparent]="activeCategory !== 'women'"
+            [class.text-black]="activeCategory !== 'women'"
+            class="py-2 px-6 rounded-lg font-bold transition-colors"
+            (click)="changeCategory('women')"
+          >
+            Women
+          </button>
+          <button 
+            [class.bg-black]="activeCategory === 'men'"
+            [class.text-white]="activeCategory === 'men'"
+            [class.bg-transparent]="activeCategory !== 'men'"
+            [class.text-black]="activeCategory !== 'men'"
+            class="py-2 px-6 rounded-lg font-bold transition-colors"
+            (click)="changeCategory('men')"
+          >
+            Men
+          </button>
+          <button 
+            [class.bg-black]="activeCategory === 'kids'"
+            [class.text-white]="activeCategory === 'kids'"
+            [class.bg-transparent]="activeCategory !== 'kids'"
+            [class.text-black]="activeCategory !== 'kids'"
+            class="py-2 px-6 rounded-lg font-bold transition-colors"
+            (click)="changeCategory('kids')"
+          >
+            Kids
+          </button>
+        </div>
+      </div>
+      
+      <!-- Size Table -->
+      <div class="bg-[#F4F6F5] rounded-2xl p-8 mb-12 overflow-x-auto">
+        <h2 class="text-2xl font-bold mb-6 capitalize">{{activeCategory}} Sizes</h2>
+        
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-gray-300">
+              <th *ngFor="let header of activeTable.headers" class="py-3 px-4 text-left">{{header}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let size of activeTable.sizes" class="border-b border-gray-200">
+              <td class="py-4 px-4 font-bold">{{size.label}}</td>
+              <td *ngFor="let measurement of size.measurements" class="py-4 px-4">{{measurement}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Measuring Instructions -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">How to Measure</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6 bg-[#F4F6F5] rounded-xl">
+            <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-black font-bold">1</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Bust/Chest</h3>
+            <p class="text-[#8E8E8E]">Measure around the fullest part of your bust/chest, keeping the tape parallel to the floor.</p>
+          </div>
+          
+          <div class="text-center p-6 bg-[#F4F6F5] rounded-xl">
+            <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-black font-bold">2</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Waist</h3>
+            <p class="text-[#8E8E8E]">Measure around your natural waistline, the narrowest part of your torso.</p>
+          </div>
+          
+          <div class="text-center p-6 bg-[#F4F6F5] rounded-xl">
+            <div class="w-16 h-16 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-black font-bold">3</span>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Hip</h3>
+            <p class="text-[#8E8E8E]">Measure around the fullest part of your hips, typically 7-8 inches below your waistline.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tips Section -->
+      <div class="bg-[#F4F6F5] rounded-2xl p-8">
+        <h2 class="text-2xl font-bold mb-6">Size Guide Tips</h2>
+        
+        <ul class="space-y-4">
+          <li class="flex items-start">
+            <span class="text-[#EBD96B] mr-3 text-2xl">•</span>
+            <p class="text-[#8E8E8E]">Use a soft measuring tape for accurate measurements.</p>
+          </li>
+          <li class="flex items-start">
+            <span class="text-[#EBD96B] mr-3 text-2xl">•</span>
+            <p class="text-[#8E8E8E]">Keep the measuring tape snug but not tight against your body.</p>
+          </li>
+          <li class="flex items-start">
+            <span class="text-[#EBD96B] mr-3 text-2xl">•</span>
+            <p class="text-[#8E8E8E]">For the most accurate fit, have someone else take your measurements.</p>
+          </li>
+          <li class="flex items-start">
+            <span class="text-[#EBD96B] mr-3 text-2xl">•</span>
+            <p class="text-[#8E8E8E]">If you're between sizes, we recommend sizing up for a more comfortable fit.</p>
+          </li>
+        </ul>
+        
+        <div class="mt-8 text-center">
+          <p class="text-[#8E8E8E] mb-4">Still unsure about your size?</p>
+          <a routerLink="/contact" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors inline-block">
+            Contact Customer Service
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 
