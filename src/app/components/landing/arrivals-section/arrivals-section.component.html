@@ -1,4 +1,4 @@
-<section class="section-padding bg-white">
+<section class="section-padding bg-[#F4F6F5]">
   <div class="container mx-auto px-4">
     <!-- Section Header -->
     <div class="flex flex-col items-start mb-16">
@@ -6,26 +6,24 @@
       <h2 class="heading-md text-black">NEW ARRIVALS</h2>
     </div>
     
-    <!-- Product Categories Grid -->
+    <!-- Arrivals Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-[90px]">
-      <!-- Hoodies & Sweetshirt -->
-      <div *ngFor="let category of categories"  class="flex flex-col gap-7">
-        <div class="relative rounded-[20px] overflow-hidden aspect-[1/1.2]">
+      <div *ngFor="let arrival of arrivals" class="flex flex-col gap-7 arrival-item">
+        <div class="relative rounded-[20px] overflow-hidden">
           <img 
-            [src]="category.imagePath" 
-            alt="Hoodies & Sweetshirt" 
+            [src]="arrival.imagePath" 
+            [alt]="arrival.title" 
             class="w-full h-full object-cover"
           >
         </div>
         <div class="flex flex-col gap-[7px]">
-          <h3 class="text-[32px] font-medium text-[#191919] leading-[1.5625] tracking-[-0.04em]">{{category.title}}</h3>
-          <div class="flex items-center gap-[180px]">
-            <span class="text-[24px] font-medium text-[#7F7F7F] leading-[2.0833] tracking-[-0.04em]">Explore Now!</span>
-            <img src="images/arrow.svg" alt="Arrow" class="w-8">
+          <h3 class="text-[32px] font-medium text-[#191919] leading-[1.5625] tracking-[-0.04em]">{{arrival.title}}</h3>
+          <div class="flex items-center justify-between">
+            <span class="text-[24px] font-medium text-[#7F7F7F] leading-[2.0833] tracking-[-0.04em]">{{arrival.price}}</span>
+            <img src="images/arrow.svg" alt="Arrow" class="w-8 arrow-icon">
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>

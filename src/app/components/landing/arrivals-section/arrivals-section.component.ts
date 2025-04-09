@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductCategory } from '../../../interfaces/shopping.interface';
 
+interface Arrival {
+  id: string;
+  title: string;
+  price: string;
+  imagePath: string;
+}
+
 @Component({
   selector: 'app-arrivals-section',
   standalone: true,
@@ -10,24 +17,24 @@ import { ProductCategory } from '../../../interfaces/shopping.interface';
   styleUrl: './arrivals-section.component.scss'
 })
 export class ArrivalsSectionComponent {
-  categories: ProductCategory[] = [
+  arrivals: Arrival[] = [
     {
       id: '1',
       title: 'Hoodies & Sweetshirt',
-      imagePath: 'images/hoodies.png',
-      exploreLink: '#'
+      price: 'Explore Now!',
+      imagePath: 'images/hoodies.jpg',
     },
     {
       id: '2',
       title: 'Coats & Parkas',
-      imagePath: 'images/coats.png',
-      exploreLink: '#'
+      price: 'Explore Now!',
+      imagePath: 'images/coats.jpg',
     },
     {
       id: '3',
       title: 'Tees & T-Shirt',
-      imagePath: 'images/tshirts.png',
-      exploreLink: '#'
+      price: 'Explore Now!',
+      imagePath: 'images/tees.jpg',
     }
   ];
 }
