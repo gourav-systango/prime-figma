@@ -1,9 +1,14 @@
-<div class="container mx-auto px-4 py-8 max-w-5xl">
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold mb-2">My Account</h1>
-    <p class="text-gray-600">Manage your profile and addresses</p>
+<!-- Hero Section -->
+<section class="bg-black text-white py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-black mb-6">MY PROFILE</h1>
+      <p class="text-xl text-[#8E8E8E]">Manage your personal information and delivery addresses</p>
+    </div>
   </div>
-  
+</section>
+
+<div class="container mx-auto px-4 py-16 max-w-5xl">
   <!-- Tabs -->
   <div class="mb-8 border-b">
     <div class="flex">
@@ -51,9 +56,13 @@
               </div>
               <button 
                 (click)="startEditingProfile()" 
-                class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+                class="bg-black text-white p-2 rounded-full hover:bg-opacity-80 transition-colors"
+                aria-label="Edit profile"
+                title="Edit profile"
               >
-                Edit Profile
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
               </button>
             </div>
             
@@ -162,14 +171,35 @@
   
   <!-- Addresses Tab -->
   <div *ngIf="activeTab === 'addresses'" class="space-y-8">
-    <!-- Add Address Button -->
-    <div class="flex justify-end mb-4">
+    <!-- Success Message -->
+    <div *ngIf="addressUpdateSuccess" class="bg-green-50 text-green-700 rounded-lg p-4 mb-4 flex items-center justify-between">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        {{ addressUpdateMessage }}
+      </div>
       <button 
-        *ngIf="!isAddingAddress" 
-        (click)="startAddingAddress()" 
-        class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+        (click)="resetAddressMessages()" 
+        class="text-green-700 hover:text-green-900"
+        aria-label="Dismiss message"
       >
-        Add New Address
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Add Address Button -->
+    <div class="flex justify-end mb-4" *ngIf="!isAddingAddress && !isEditingAddress">
+      <button 
+        (click)="startAddingAddress()" 
+        class="bg-black text-white py-2 px-5 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2 shadow-sm hover:shadow"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Add New Address</span>
       </button>
     </div>
     
@@ -178,8 +208,22 @@
       <h2 class="text-xl font-bold mb-4">{{ isAddingAddress ? 'Add New Address' : 'Edit Address' }}</h2>
       
       <!-- Error Message -->
-      <div *ngIf="addressFormError" class="bg-red-50 text-red-700 rounded-lg p-4 mb-4">
-        {{ addressFormError }}
+      <div *ngIf="addressFormError" class="bg-red-50 text-red-700 rounded-lg p-4 mb-4 flex items-center justify-between">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          {{ addressFormError }}
+        </div>
+        <button 
+          (click)="resetAddressMessages()" 
+          class="text-red-700 hover:text-red-900"
+          aria-label="Dismiss error"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
       
       <!-- Form -->
@@ -292,14 +336,22 @@
           <!-- Default -->
           <div class="md:col-span-2">
             <div class="flex items-center">
-              <input 
-                type="checkbox" 
-                id="is-default" 
-                name="isDefault" 
-                [(ngModel)]="addressForm.isDefault"
-                class="h-4 w-4 text-[#EBD96B] rounded border-gray-300 focus:ring-[#EBD96B]"
+              <button 
+                type="button"
+                class="flex items-center space-x-2 py-1 px-3 rounded-full border"
+                [ngClass]="addressForm.isDefault ? 
+                  'bg-[#EBD96B] bg-opacity-20 border-[#EBD96B]' : 
+                  'border-gray-300 hover:border-[#EBD96B] hover:bg-[#FEFBE8]'"
+                (click)="toggleDefaultAddress(!addressForm.isDefault)"
               >
-              <label for="is-default" class="ml-2 block text-sm text-gray-700">Set as default address</label>
+                <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center bg-white"
+                     [ngClass]="addressForm.isDefault ? 'border-[#EBD96B]' : 'border-gray-400'">
+                  <div *ngIf="addressForm.isDefault" class="w-2 h-2 rounded-full bg-[#EBD96B]"></div>
+                </div>
+                <span class="text-sm" [ngClass]="addressForm.isDefault ? 'font-medium' : ''">
+                  Set as default address
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -328,20 +380,23 @@
       <p class="text-gray-500">You don't have any addresses yet.</p>
       <button 
         (click)="startAddingAddress()" 
-        class="mt-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+        class="mt-4 bg-black text-white py-2 px-5 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2 mx-auto shadow-sm hover:shadow"
       >
-        Add Your First Address
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Add Your First Address</span>
       </button>
     </div>
     
-    <div *ngIf="addresses.length" class="space-y-4">
+    <div *ngIf="addresses.length && !isAddingAddress && !isEditingAddress" class="space-y-4">
       <div *ngFor="let address of addresses" class="bg-white rounded-lg shadow-md p-6">
         <div class="flex flex-col md:flex-row justify-between">
           <div>
             <!-- Address Details -->
             <div class="flex items-center mb-2">
               <span class="capitalize text-sm font-medium bg-gray-100 px-2 py-1 rounded">{{ address.type }}</span>
-              <span *ngIf="address.isDefault" class="ml-2 text-sm text-white bg-green-500 px-2 py-1 rounded">Default</span>
+              <span *ngIf="address.isDefault" class="ml-2 text-sm text-white bg-[#EBD96B] text-black px-2 py-1 rounded">Default</span>
             </div>
             
             <h3 class="text-lg font-semibold">{{ address.name }}</h3>
@@ -353,29 +408,91 @@
             </address>
           </div>
           
-          <div class="mt-4 md:mt-0 flex md:flex-col space-x-4 md:space-x-0 md:space-y-2">
+          <div class="mt-4 md:mt-0 flex md:flex-row items-center space-x-3">
+            <!-- Edit button -->
             <button 
               (click)="startEditingAddress(address)" 
-              class="text-blue-600 hover:underline text-sm"
+              class="text-blue-600 p-2 rounded-full hover:bg-blue-100 transition-all flex items-center justify-center"
+              aria-label="Edit address"
+              title="Edit address"
             >
-              Edit
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
             </button>
+            
+            <!-- Delete button -->
             <button 
-              (click)="deleteAddress(address.id)" 
-              class="text-red-600 hover:underline text-sm"
+              (click)="confirmDeleteAddress(address.id)" 
+              class="text-red-600 p-2 rounded-full hover:bg-red-100 transition-all flex items-center justify-center"
+              aria-label="Delete address"
+              title="Delete address"
             >
-              Delete
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
             </button>
-            <button 
-              *ngIf="!address.isDefault" 
-              (click)="setDefaultAddress(address.id)" 
-              class="text-green-600 hover:underline text-sm"
-            >
-              Set as Default
-            </button>
+            
+            <!-- Default toggle -->
+            <div class="flex items-center">
+              <button 
+                *ngIf="!address.isDefault" 
+                (click)="confirmSetDefaultAddress(address.id)" 
+                class="flex items-center space-x-2 py-1 px-3 rounded-full border border-gray-300 hover:border-[#EBD96B] hover:bg-[#FEFBE8] transition-all"
+                title="Set as default address"
+              >
+                <div class="w-4 h-4 rounded-full border-2 border-gray-400 flex items-center justify-center bg-white"></div>
+                <span class="text-sm">Default</span>
+              </button>
+              <div 
+                *ngIf="address.isDefault" 
+                class="flex items-center space-x-2 py-1 px-3 rounded-full bg-[#EBD96B] bg-opacity-20 border border-[#EBD96B]"
+              >
+                <div class="w-4 h-4 rounded-full border-2 border-[#EBD96B] flex items-center justify-center bg-white">
+                  <div class="w-2 h-2 rounded-full bg-[#EBD96B]"></div>
+                </div>
+                <span class="text-sm font-medium">Default</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Confirmation Dialog -->
+<p-dialog 
+  [(visible)]="confirmDialogVisible" 
+  [style]="{width: '450px'}" 
+  [modal]="true" 
+  styleClass="p-fluid"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (onHide)="onDialogHide()"
+  header="{{dialogTitle}}"
+>
+  <div class="p-4">
+    <p>{{dialogMessage}}</p>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      label="Cancel" 
+      icon="pi pi-times" 
+      class="p-button-text" 
+      (click)="confirmDialogVisible = false"
+    ></button>
+    <button 
+      pButton 
+      label="Confirm" 
+      icon="pi pi-check" 
+      class="p-button-danger" 
+      (click)="executeDialogAction()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Toast messages -->
+<p-toast></p-toast>

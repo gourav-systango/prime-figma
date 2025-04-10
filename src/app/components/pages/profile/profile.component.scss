@@ -57,24 +57,47 @@ input, select {
   }
 }
 
-// Address card actions
-.text-blue-600, .text-red-600, .text-green-600 {
-  transition: color 0.3s ease;
+// Toggle switch styles
+.toggle-label {
   position: relative;
+  transition: background-color 0.3s ease;
   
-  &:after {
+  &:before {
     content: '';
     position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: -1px;
-    left: 0;
-    background-color: currentColor;
-    transition: width 0.3s ease;
+    top: 0.15rem;
+    left: 0.15rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+input[type="checkbox"]:checked + .toggle-label:before {
+  transform: translateX(1.75rem);
+}
+
+// Address card actions
+.text-blue-600, .text-red-600, .text-green-600 {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
-  &:hover:after {
-    width: 100%;
+  svg {
+    transition: transform 0.2s ease;
+  }
+  
+  &:hover svg {
+    transform: scale(1.1);
+  }
+  
+  &:active svg {
+    transform: scale(0.95);
   }
 }
 
@@ -99,5 +122,35 @@ input, select {
   // Two column layout
   .grid-cols-2 {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+// Button ripple effect
+button.rounded-full {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .5s, opacity 1s;
+  }
+  
+  &:active::after {
+    transform: scale(0, 0);
+    opacity: 0.2;
+    transition: 0s;
   }
 }

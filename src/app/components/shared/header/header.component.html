@@ -41,7 +41,7 @@
           <!-- Logged in -->
           <ng-container *ngIf="authService.isAuthenticated()">
             <div class="flex items-center gap-4">
-              <span class="text-gray-700">Hello, {{ authService.getCurrentUser()?.name }}</span>
+              <a routerLink="/profile" class="text-gray-700 hover:text-[#EBD96B] transition-colors">Hello, {{ authService.getCurrentUser()?.name }}</a>
               <button 
                 (click)="logout()" 
                 class="text-black hover:text-red-500 transition-colors font-medium"
@@ -108,7 +108,7 @@
 
         <!-- Logged in (mobile) -->
         <ng-container *ngIf="authService.isAuthenticated()">
-          <div class="text-gray-700 py-2">Hello, {{ authService.getCurrentUser()?.name }}</div>
+          <a routerLink="/profile" class="text-gray-700 hover:text-[#EBD96B] transition-colors py-2">Hello, {{ authService.getCurrentUser()?.name }}</a>
           <button 
             (click)="logout()" 
             class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium"
