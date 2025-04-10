@@ -1,0 +1,118 @@
+[
+  {
+    "userId": 1,
+    "addresses": [
+      {
+        "id": 1,
+        "type": "home",
+        "name": "John Doe",
+        "street": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "zipCode": "10001",
+        "country": "USA",
+        "phone": "+1-555-123-4567",
+        "isDefault": true
+      },
+      {
+        "id": 2,
+        "type": "office",
+        "name": "John Doe",
+        "street": "456 Park Avenue",
+        "city": "New York",
+        "state": "NY",
+        "zipCode": "10022",
+        "country": "USA",
+        "phone": "+1-555-987-6543",
+        "isDefault": false
+      }
+    ]
+  },
+  {
+    "userId": 2,
+    "addresses": [
+      {
+        "id": 3,
+        "type": "home",
+        "name": "Alice Smith",
+        "street": "789 Broadway",
+        "city": "Boston",
+        "state": "MA",
+        "zipCode": "02116",
+        "country": "USA",
+        "phone": "+1-555-234-5678",
+        "isDefault": true
+      }
+    ]
+  },
+  {
+    "userId": 3,
+    "addresses": [
+      {
+        "id": 4,
+        "type": "office",
+        "name": "Admin User",
+        "street": "100 Tech Plaza",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94105",
+        "country": "USA",
+        "phone": "+1-555-789-0123",
+        "isDefault": true
+      },
+      {
+        "id": 5,
+        "type": "home",
+        "name": "Admin User",
+        "street": "200 Pine Street",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94111",
+        "country": "USA",
+        "phone": "+1-555-456-7890",
+        "isDefault": false
+      },
+      {
+        "id": 6,
+        "type": "other",
+        "name": "Admin User",
+        "street": "300 Market Street",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94102",
+        "country": "USA",
+        "phone": "+1-555-321-6547",
+        "isDefault": false
+      }
+    ]
+  },
+  {
+    "userId": 4,
+    "addresses": [
+      {
+        "id": 7,
+        "type": "home",
+        "name": "Test User",
+        "street": "500 Test Avenue",
+        "city": "Seattle",
+        "state": "WA",
+        "zipCode": "98101",
+        "country": "USA",
+        "phone": "+1-555-852-9631",
+        "isDefault": true
+      },
+      {
+        "id": 8,
+        "type": "friend",
+        "name": "Friend of Test",
+        "street": "600 Friend Circle",
+        "city": "Portland",
+        "state": "OR",
+        "zipCode": "97201",
+        "country": "USA",
+        "phone": "+1-555-147-2583",
+        "isDefault": false
+      }
+    ]
+  }
+] 

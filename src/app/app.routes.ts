@@ -4,17 +4,34 @@ import { CataloguePageComponent } from './components/catalogue/catalogue-page.co
 import { FashionPageComponent } from './components/fashion/fashion-page.component';
 import { LifestyleComponent } from './components/lifestyle/lifestyle.component';
 import { FavouriteComponent } from './components/favourite/favourite.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 // Import footer page components
 import { AboutComponent } from './components/pages/about/about.component';
 import { ContactComponent } from './components/pages/contact/contact.component';
+import { ForgotPasswordComponent } from './components/pages/forgot-password/forgot-password.component';
+import { ProfileComponent } from './components/pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'catalogue', component: CataloguePageComponent },
   { path: 'fashion', component: FashionPageComponent },
   { path: 'lifestyle', component: LifestyleComponent },
-  { path: 'favourite', component: FavouriteComponent },
+  { 
+    path: 'favourite', 
+    component: FavouriteComponent,
+    canActivate: [AuthGuardService]  // Protect this route with auth guard
+  },
+  { 
+    path: 'profile', 
+    component: ProfileComponent,
+    canActivate: [AuthGuardService]  // Protect this route with auth guard
+  },
+  
+  // Authentication routes
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'signin', redirectTo: '', pathMatch: 'full' },
+  { path: 'signup', redirectTo: '', pathMatch: 'full' },
   
   // Footer page routes
   { path: 'about', component: AboutComponent },

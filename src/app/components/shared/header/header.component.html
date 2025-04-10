@@ -1,26 +1,132 @@
-<header class="bg-white py-6">
-  <div class="container mx-auto px-4 flex justify-between items-center">
-    <div routerLink="/" class="flex items-center gap-3">
-      <img src="images/fashion-logo.svg" alt="Fashion Logo" class="w-8 h-8">
-      <h1 class="text-black text-[40px] font-['Poppins'] font-black tracking-[0.03em] leading-[1.5]">FASHION</h1>
+<header class="bg-white py-4 px-6 shadow-sm sticky top-0 z-40">
+  <div class="container mx-auto">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center gap-2">
+        <img src="images/fashion-logo.svg" alt="Fashion Logo" class="w-8 h-8">
+        <span class="text-xl font-bold">FASHION</span>
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex">
+        <ul class="flex space-x-8">
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="text-black hover:text-[#EBD96B] transition-colors">Home</a></li>
+          <li><a routerLink="/catalogue" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Catalogue</a></li>
+          <li><a routerLink="/fashion" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Fashion</a></li>
+          <li><a routerLink="/lifestyle" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Lifestyle</a></li>
+          <li><a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Favourite</a></li>
+        </ul>
+      </nav>
+      
+      <!-- Right Side Actions -->
+      <div class="flex items-center gap-4">
+        <!-- Auth Buttons (desktop) -->
+        <div class="hidden md:flex items-center gap-4">
+          <!-- Not logged in -->
+          <ng-container *ngIf="!authService.isAuthenticated()">
+            <button 
+              (click)="openAuthModal('signin')" 
+              class="text-black hover:text-[#EBD96B] transition-colors font-medium"
+            >
+              Sign In
+            </button>
+            <button 
+              (click)="openAuthModal('signup')" 
+              class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors font-medium"
+            >
+              Sign Up
+            </button>
+          </ng-container>
+
+          <!-- Logged in -->
+          <ng-container *ngIf="authService.isAuthenticated()">
+            <div class="flex items-center gap-4">
+              <span class="text-gray-700">Hello, {{ authService.getCurrentUser()?.name }}</span>
+              <button 
+                (click)="logout()" 
+                class="text-black hover:text-red-500 transition-colors font-medium"
+              >
+                Logout
+              </button>
+            </div>
+          </ng-container>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden focus:outline-none" (click)="toggleMobileMenu()">
+          <svg 
+            *ngIf="!isMobileMenuOpen" 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg 
+            *ngIf="isMobileMenuOpen" 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
     </div>
     
-    <nav class="hidden md:flex">
-      <ul class="flex gap-16">
-        <li><a routerLink="/catalogue" class="text-[#242323] text-[22px] font-['Poppins'] font-medium tracking-[0.01em] leading-[1.5] hover:text-black transition-colors">CATALOGUE</a></li>
-        <li><a routerLink="/fashion"class="text-[#242323] text-[22px] font-['Poppins'] font-medium tracking-[0.01em] leading-[1.5] hover:text-black transition-colors">FASHION</a></li>
-        <li><a routerLink="/favourite" class="text-[#242323] text-[22px] font-['Poppins'] font-medium tracking-[0.01em] leading-[1.5] hover:text-black transition-colors">FAVOURITE</a></li>
-        <li><a routerLink="/lifestyle" class="text-[#242323] text-[22px] font-['Poppins'] font-medium tracking-[0.01em] leading-[1.5] hover:text-black transition-colors">LIFESTYLE</a></li>
-      </ul>
-    </nav>
-    
-    <button class="hidden md:block bg-black text-[#FEFEFE] text-[24px] font-['Poppins'] font-medium tracking-[-0.03em] leading-[1.5] rounded-[7px] px-6 py-2 hover:bg-gray-900 transition-colors">
-      SIGN UP
-    </button>
-    
-    <button class="md:hidden text-black">
-      <i class="pi pi-bars text-2xl"></i>
-    </button>
+    <!-- Mobile Menu (shown on toggle) -->
+    <div *ngIf="isMobileMenuOpen" class="md:hidden mt-4 border-t pt-4">
+      <nav class="flex flex-col space-y-4">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="text-black hover:text-[#EBD96B] transition-colors">Home</a>
+        <a routerLink="/catalogue" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Catalogue</a>
+        <a routerLink="/fashion" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Fashion</a>
+        <a routerLink="/lifestyle" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Lifestyle</a>
+        <a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Favourite</a>
+      </nav>
+      
+      <!-- Auth Buttons (mobile) -->
+      <div class="flex flex-col space-y-2 mt-4 pt-4 border-t">
+        <!-- Not logged in (mobile) -->
+        <ng-container *ngIf="!authService.isAuthenticated()">
+          <button 
+            (click)="openAuthModal('signin')" 
+            class="text-black hover:text-[#EBD96B] transition-colors font-medium py-2"
+          >
+            Sign In
+          </button>
+          <button 
+            (click)="openAuthModal('signup')" 
+            class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors font-medium"
+          >
+            Sign Up
+          </button>
+        </ng-container>
+
+        <!-- Logged in (mobile) -->
+        <ng-container *ngIf="authService.isAuthenticated()">
+          <div class="text-gray-700 py-2">Hello, {{ authService.getCurrentUser()?.name }}</div>
+          <button 
+            (click)="logout()" 
+            class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium"
+          >
+            Logout
+          </button>
+        </ng-container>
+      </div>
+    </div>
   </div>
 </header>
+
+<!-- Auth Modal -->
+<app-auth-modal 
+  [isOpen]="authModalService.isModalOpen" 
+  [mode]="authModalService.modalMode"
+  (close)="authModalService.closeModal()"
+  (modeChange)="authModalService.setMode($event)"
+  (authenticate)="handleAuthentication($event)"
+></app-auth-modal>
 

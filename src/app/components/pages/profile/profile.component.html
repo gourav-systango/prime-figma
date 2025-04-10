@@ -1,0 +1,381 @@
+<div class="container mx-auto px-4 py-8 max-w-5xl">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">My Account</h1>
+    <p class="text-gray-600">Manage your profile and addresses</p>
+  </div>
+  
+  <!-- Tabs -->
+  <div class="mb-8 border-b">
+    <div class="flex">
+      <button 
+        (click)="setActiveTab('profile')" 
+        class="py-3 px-6 border-b-2 font-medium mr-4"
+        [ngClass]="activeTab === 'profile' ? 'border-[#EBD96B] text-black' : 'border-transparent text-gray-500 hover:text-black'"
+      >
+        Profile
+      </button>
+      <button 
+        (click)="setActiveTab('addresses')" 
+        class="py-3 px-6 border-b-2 font-medium"
+        [ngClass]="activeTab === 'addresses' ? 'border-[#EBD96B] text-black' : 'border-transparent text-gray-500 hover:text-black'"
+      >
+        Addresses
+      </button>
+    </div>
+  </div>
+  
+  <!-- Profile Tab -->
+  <div *ngIf="activeTab === 'profile'" class="space-y-8">
+    <!-- Profile Card -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="flex flex-col md:flex-row">
+        <!-- Profile Picture -->
+        <div class="mb-6 md:mb-0 md:mr-8">
+          <div class="relative w-32 h-32 rounded-full overflow-hidden mx-auto md:mx-0">
+            <img 
+              [src]="user?.profilePicture || 'https://via.placeholder.com/128'" 
+              alt="Profile picture"
+              class="w-full h-full object-cover"
+            >
+          </div>
+        </div>
+        
+        <!-- Profile Info -->
+        <div class="flex-1">
+          <!-- View Mode -->
+          <div *ngIf="!isEditingProfile" class="space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h2 class="text-2xl font-bold">{{ user?.name }}</h2>
+                <p class="text-gray-600">{{ user?.email }}</p>
+              </div>
+              <button 
+                (click)="startEditingProfile()" 
+                class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+              >
+                Edit Profile
+              </button>
+            </div>
+            
+            <div class="mt-4 border-t pt-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-500">Phone</p>
+                  <p>{{ user?.phone || 'Not provided' }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Role</p>
+                  <p class="capitalize">{{ user?.role }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Edit Mode -->
+          <div *ngIf="isEditingProfile" class="space-y-4">
+            <h2 class="text-xl font-bold">Edit Profile</h2>
+            
+            <!-- Success Message -->
+            <div *ngIf="profileUpdateSuccess" class="bg-green-50 text-green-700 rounded-lg p-4 mb-4">
+              Profile updated successfully!
+            </div>
+            
+            <!-- Error Message -->
+            <div *ngIf="profileUpdateError" class="bg-red-50 text-red-700 rounded-lg p-4 mb-4">
+              {{ profileUpdateError }}
+            </div>
+            
+            <!-- Form -->
+            <form (ngSubmit)="saveProfile()" class="space-y-4">
+              <!-- Profile Picture URL -->
+              <div>
+                <label for="profile-picture" class="block text-sm font-medium text-gray-700 mb-1">Profile Picture URL</label>
+                <input 
+                  type="text" 
+                  id="profile-picture" 
+                  name="profilePicture" 
+                  [(ngModel)]="profileForm.profilePicture"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+                >
+              </div>
+              
+              <!-- Name -->
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  [(ngModel)]="profileForm.name"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+                  required
+                >
+              </div>
+              
+              <!-- Email -->
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  [(ngModel)]="profileForm.email"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+                  required
+                >
+              </div>
+              
+              <!-- Phone -->
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  name="phone" 
+                  [(ngModel)]="profileForm.phone"
+                  class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+                >
+              </div>
+              
+              <!-- Buttons -->
+              <div class="flex justify-end space-x-4 pt-4">
+                <button 
+                  type="button" 
+                  (click)="cancelEditingProfile()"
+                  class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Addresses Tab -->
+  <div *ngIf="activeTab === 'addresses'" class="space-y-8">
+    <!-- Add Address Button -->
+    <div class="flex justify-end mb-4">
+      <button 
+        *ngIf="!isAddingAddress" 
+        (click)="startAddingAddress()" 
+        class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+      >
+        Add New Address
+      </button>
+    </div>
+    
+    <!-- Add/Edit Address Form -->
+    <div *ngIf="isAddingAddress || isEditingAddress" class="bg-white rounded-lg shadow-md p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">{{ isAddingAddress ? 'Add New Address' : 'Edit Address' }}</h2>
+      
+      <!-- Error Message -->
+      <div *ngIf="addressFormError" class="bg-red-50 text-red-700 rounded-lg p-4 mb-4">
+        {{ addressFormError }}
+      </div>
+      
+      <!-- Form -->
+      <form (ngSubmit)="saveAddress()" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Address Type -->
+          <div>
+            <label for="address-type" class="block text-sm font-medium text-gray-700 mb-1">Address Type</label>
+            <select 
+              id="address-type" 
+              name="type" 
+              [(ngModel)]="addressForm.type"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+            >
+              <option *ngFor="let type of addressTypes" [value]="type">{{ type | titlecase }}</option>
+            </select>
+          </div>
+          
+          <!-- Name -->
+          <div>
+            <label for="address-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input 
+              type="text" 
+              id="address-name" 
+              name="name" 
+              [(ngModel)]="addressForm.name"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- Street -->
+          <div class="md:col-span-2">
+            <label for="street" class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+            <input 
+              type="text" 
+              id="street" 
+              name="street" 
+              [(ngModel)]="addressForm.street"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- City -->
+          <div>
+            <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+            <input 
+              type="text" 
+              id="city" 
+              name="city" 
+              [(ngModel)]="addressForm.city"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- State -->
+          <div>
+            <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
+            <input 
+              type="text" 
+              id="state" 
+              name="state" 
+              [(ngModel)]="addressForm.state"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- Zip Code -->
+          <div>
+            <label for="zip-code" class="block text-sm font-medium text-gray-700 mb-1">ZIP/Postal Code</label>
+            <input 
+              type="text" 
+              id="zip-code" 
+              name="zipCode" 
+              [(ngModel)]="addressForm.zipCode"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- Country -->
+          <div>
+            <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+            <input 
+              type="text" 
+              id="country" 
+              name="country" 
+              [(ngModel)]="addressForm.country"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- Phone -->
+          <div>
+            <label for="address-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+            <input 
+              type="tel" 
+              id="address-phone" 
+              name="phone" 
+              [(ngModel)]="addressForm.phone"
+              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#EBD96B] focus:border-[#EBD96B]"
+              required
+            >
+          </div>
+          
+          <!-- Default -->
+          <div class="md:col-span-2">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="is-default" 
+                name="isDefault" 
+                [(ngModel)]="addressForm.isDefault"
+                class="h-4 w-4 text-[#EBD96B] rounded border-gray-300 focus:ring-[#EBD96B]"
+              >
+              <label for="is-default" class="ml-2 block text-sm text-gray-700">Set as default address</label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-4 pt-4">
+          <button 
+            type="button" 
+            (click)="cancelEditingAddress()"
+            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+          >
+            {{ isAddingAddress ? 'Add Address' : 'Save Address' }}
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Addresses List -->
+    <div *ngIf="!addresses.length && !isAddingAddress" class="bg-white rounded-lg shadow-md p-6 text-center">
+      <p class="text-gray-500">You don't have any addresses yet.</p>
+      <button 
+        (click)="startAddingAddress()" 
+        class="mt-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors"
+      >
+        Add Your First Address
+      </button>
+    </div>
+    
+    <div *ngIf="addresses.length" class="space-y-4">
+      <div *ngFor="let address of addresses" class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex flex-col md:flex-row justify-between">
+          <div>
+            <!-- Address Details -->
+            <div class="flex items-center mb-2">
+              <span class="capitalize text-sm font-medium bg-gray-100 px-2 py-1 rounded">{{ address.type }}</span>
+              <span *ngIf="address.isDefault" class="ml-2 text-sm text-white bg-green-500 px-2 py-1 rounded">Default</span>
+            </div>
+            
+            <h3 class="text-lg font-semibold">{{ address.name }}</h3>
+            <address class="not-italic text-gray-600 mt-1">
+              {{ address.street }}<br>
+              {{ address.city }}, {{ address.state }} {{ address.zipCode }}<br>
+              {{ address.country }}<br>
+              {{ address.phone }}
+            </address>
+          </div>
+          
+          <div class="mt-4 md:mt-0 flex md:flex-col space-x-4 md:space-x-0 md:space-y-2">
+            <button 
+              (click)="startEditingAddress(address)" 
+              class="text-blue-600 hover:underline text-sm"
+            >
+              Edit
+            </button>
+            <button 
+              (click)="deleteAddress(address.id)" 
+              class="text-red-600 hover:underline text-sm"
+            >
+              Delete
+            </button>
+            <button 
+              *ngIf="!address.isDefault" 
+              (click)="setDefaultAddress(address.id)" 
+              class="text-green-600 hover:underline text-sm"
+            >
+              Set as Default
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
