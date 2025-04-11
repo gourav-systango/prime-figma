@@ -1,0 +1,103 @@
+:host {
+  display: block;
+  
+  ::ng-deep {
+    // Accordion styles
+    .filter-accordion {
+      .p-accordion-header {
+        a {
+          padding: 1rem 0;
+          font-weight: 600;
+          color: #000;
+          border: none;
+          background: transparent;
+          
+          &:hover {
+            background: transparent;
+            color: #EBD96B;
+          }
+          
+          .p-accordion-header-text {
+            font-size: 0.875rem;
+          }
+          
+          .p-accordion-toggle-icon {
+            color: #8E8E8E;
+          }
+        }
+      }
+      
+      .p-accordion-content {
+        padding: 0.5rem 0 1.5rem;
+        border: none;
+        background: transparent;
+      }
+      
+      // Remove border from last item
+      .p-accordion-tab:last-child {
+        .p-accordion-content {
+          padding-bottom: 0;
+        }
+      }
+    }
+    
+    // Checkbox styles
+    .p-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+      
+      .p-checkbox-box {
+        border-color: #E5E7EB;
+        
+        &.p-highlight {
+          border-color: #EBD96B;
+          background: #EBD96B;
+        }
+        
+        &:not(.p-disabled):hover {
+          border-color: #EBD96B;
+        }
+      }
+    }
+    
+    // Radio button styles
+    .p-radiobutton {
+      width: 1.25rem;
+      height: 1.25rem;
+      
+      .p-radiobutton-box {
+        border-color: #E5E7EB;
+        
+        &.p-highlight {
+          border-color: #EBD96B;
+          background: #EBD96B;
+          
+          .p-radiobutton-icon {
+            background-color: #000;
+          }
+        }
+        
+        &:not(.p-disabled):hover {
+          border-color: #EBD96B;
+        }
+      }
+    }
+    
+    // Slider styles
+    .p-slider {
+      .p-slider-range {
+        background: #EBD96B;
+      }
+      
+      .p-slider-handle {
+        border-color: #EBD96B;
+        background: #EBD96B;
+        
+        &:hover {
+          background: #EBD96B;
+          border-color: #EBD96B;
+        }
+      }
+    }
+  }
+} 

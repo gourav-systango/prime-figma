@@ -1,0 +1,24 @@
+// Settings component styles
+:host {
+  display: block;
+}
+
+// Form focus states
+input:focus, select:focus {
+  outline: none;
+  border-color: #EBD96B;
+  box-shadow: 0 0 0 1px #EBD96B;
+}
+
+// Custom checkbox styles
+input[type="checkbox"] {
+  &:checked {
+    background-color: #EBD96B;
+    border-color: #EBD96B;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(235, 217, 107, 0.5);
+    border-color: #EBD96B;
+  }
+} 

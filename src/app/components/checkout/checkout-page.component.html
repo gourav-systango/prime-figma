@@ -1,0 +1,412 @@
+<section class="bg-black text-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-black mb-4">Checkout</h1>
+      <p class="text-lg text-[#8E8E8E]">Complete your order</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-12 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Progress Steps -->
+      <div class="flex justify-center mb-12">
+        <div class="flex items-center w-full max-w-3xl">
+          <div class="flex flex-col items-center">
+            <div 
+              [ngClass]="{'bg-black text-white': currentStep >= 1, 'bg-gray-200 text-gray-500': currentStep < 1}"
+              class="rounded-full h-10 w-10 flex items-center justify-center font-bold"
+            >
+              1
+            </div>
+            <span class="text-sm mt-2 font-medium" [ngClass]="{'text-black': currentStep >= 1, 'text-gray-500': currentStep < 1}">
+              Shipping
+            </span>
+          </div>
+          <div class="flex-1 h-1 mx-4" [ngClass]="{'bg-black': currentStep >= 2, 'bg-gray-200': currentStep < 2}"></div>
+          <div class="flex flex-col items-center">
+            <div 
+              [ngClass]="{'bg-black text-white': currentStep >= 2, 'bg-gray-200 text-gray-500': currentStep < 2}"
+              class="rounded-full h-10 w-10 flex items-center justify-center font-bold"
+            >
+              2
+            </div>
+            <span class="text-sm mt-2 font-medium" [ngClass]="{'text-black': currentStep >= 2, 'text-gray-500': currentStep < 2}">
+              Payment
+            </span>
+          </div>
+          <div class="flex-1 h-1 mx-4" [ngClass]="{'bg-black': currentStep >= 3, 'bg-gray-200': currentStep < 3}"></div>
+          <div class="flex flex-col items-center">
+            <div 
+              [ngClass]="{'bg-black text-white': currentStep >= 3, 'bg-gray-200 text-gray-500': currentStep < 3}"
+              class="rounded-full h-10 w-10 flex items-center justify-center font-bold"
+            >
+              3
+            </div>
+            <span class="text-sm mt-2 font-medium" [ngClass]="{'text-black': currentStep >= 3, 'text-gray-500': currentStep < 3}">
+              Confirmation
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Form Steps -->
+        <div class="lg:col-span-2" *ngIf="!orderCompleted">
+          <form [formGroup]="checkoutForm">
+            <!-- Step 1: Shipping Information -->
+            <div *ngIf="currentStep === 1" class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6">Shipping Information</h2>
+              
+              <!-- Contact Information -->
+              <div class="mb-6">
+                <h3 class="text-lg font-medium mb-4">Contact Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Full Name*</label>
+                    <input type="text" formControlName="fullName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('fullName')?.errors" class="text-red-500 text-sm mt-1">
+                      Full name is required
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Email Address*</label>
+                    <input type="email" formControlName="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('email')?.errors" class="text-red-500 text-sm mt-1">
+                      Valid email is required
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Phone Number*</label>
+                    <input type="tel" formControlName="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('phone')?.errors" class="text-red-500 text-sm mt-1">
+                      Phone number is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Shipping Address -->
+              <div>
+                <h3 class="text-lg font-medium mb-4">Shipping Address</h3>
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Street Address*</label>
+                    <input type="text" formControlName="address" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('address')?.errors" class="text-red-500 text-sm mt-1">
+                      Address is required
+                    </div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-1">City*</label>
+                    <input type="text" formControlName="city" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('city')?.errors" class="text-red-500 text-sm mt-1">
+                      City is required
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">State/Province*</label>
+                    <input type="text" formControlName="state" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('state')?.errors" class="text-red-500 text-sm mt-1">
+                      State is required
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">ZIP/Postal Code*</label>
+                    <input type="text" formControlName="zipCode" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('zipCode')?.errors" class="text-red-500 text-sm mt-1">
+                      ZIP code is required
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Country*</label>
+                    <input type="text" formControlName="country" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                    <div *ngIf="submitted && checkoutForm.get('country')?.errors" class="text-red-500 text-sm mt-1">
+                      Country is required
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <label class="flex items-center">
+                    <input type="checkbox" formControlName="saveInfo" class="h-4 w-4 mr-2">
+                    <span class="text-sm">Save this information for next time</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 2: Payment Method -->
+            <div *ngIf="currentStep === 2" class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6">Payment Method</h2>
+              
+              <!-- Payment Options -->
+              <div class="mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div 
+                    *ngFor="let method of paymentMethods"
+                    (click)="selectPaymentMethod(method.id)"
+                    class="border rounded-lg p-4 cursor-pointer transition-colors flex flex-col items-center justify-center"
+                    [ngClass]="{'border-black bg-[#F4F6F5]': selectedPaymentMethod === method.id, 'border-gray-200': selectedPaymentMethod !== method.id}"
+                  >
+                    <i [class]="method.icon" class="text-3xl mb-2"></i>
+                    <span class="font-medium">{{ method.name }}</span>
+                  </div>
+                </div>
+                
+                <!-- Credit Card Form -->
+                <div *ngIf="selectedPaymentMethod === 'credit_card'">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="md:col-span-2">
+                      <label class="block text-sm font-medium mb-1">Card Number*</label>
+                      <input type="text" formControlName="cardNumber" placeholder="**** **** **** ****" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                      <div *ngIf="submitted && checkoutForm.get('cardNumber')?.errors" class="text-red-500 text-sm mt-1">
+                        Card number is required
+                      </div>
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="block text-sm font-medium mb-1">Cardholder Name*</label>
+                      <input type="text" formControlName="cardholderName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                      <div *ngIf="submitted && checkoutForm.get('cardholderName')?.errors" class="text-red-500 text-sm mt-1">
+                        Cardholder name is required
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-1">Expiry Date*</label>
+                      <input type="text" formControlName="expiryDate" placeholder="MM / YY" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                      <div *ngIf="submitted && checkoutForm.get('expiryDate')?.errors" class="text-red-500 text-sm mt-1">
+                        Expiry date is required
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-1">CVV*</label>
+                      <input type="password" formControlName="cvv" placeholder="***" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
+                      <div *ngIf="submitted && checkoutForm.get('cvv')?.errors" class="text-red-500 text-sm mt-1">
+                        CVV is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- PayPal Instructions -->
+                <div *ngIf="selectedPaymentMethod === 'paypal'" class="border border-gray-200 rounded-lg p-4 bg-[#F4F6F5]">
+                  <p class="text-sm text-[#8E8E8E]">
+                    You'll be redirected to PayPal to complete your payment. Click "Place Order" to continue.
+                  </p>
+                </div>
+                
+                <!-- Bank Transfer Instructions -->
+                <div *ngIf="selectedPaymentMethod === 'bank'" class="border border-gray-200 rounded-lg p-4 bg-[#F4F6F5]">
+                  <p class="text-sm text-[#8E8E8E]">
+                    After placing your order, we'll send you our bank details. Your order will be processed once we receive your payment.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 3: Review Order -->
+            <div *ngIf="currentStep === 3" class="bg-white rounded-xl p-6 shadow-sm">
+              <h2 class="text-2xl font-bold mb-6">Review Your Order</h2>
+              
+              <!-- Order Summary -->
+              <div class="border-b border-gray-200 pb-6 mb-6">
+                <h3 class="text-lg font-medium mb-4">Order Items</h3>
+                
+                <div class="space-y-4">
+                  <div *ngFor="let item of cartItems" class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                      <div class="h-16 w-16 bg-[#F4F6F5] rounded-lg overflow-hidden flex-shrink-0">
+                        <img [src]="item.imageUrl" [alt]="item.name" class="w-full h-full object-cover">
+                      </div>
+                      <div>
+                        <h4 class="font-medium">{{ item.name }}</h4>
+                        <p class="text-sm text-[#8E8E8E]">
+                          <span *ngIf="item.size">Size: {{ item.size }}</span>
+                          <span *ngIf="item.color">, Color: {{ item.color }}</span>
+                          <span>, Qty: {{ item.quantity }}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="font-bold">${{ (item.price * item.quantity).toFixed(2) }}</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Shipping Information -->
+              <div class="border-b border-gray-200 pb-6 mb-6">
+                <h3 class="text-lg font-medium mb-4">Shipping Information</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                  <div>
+                    <p class="text-sm text-[#8E8E8E]">Name:</p>
+                    <p class="font-medium">{{ checkoutForm.get('fullName')?.value }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-[#8E8E8E]">Email:</p>
+                    <p class="font-medium">{{ checkoutForm.get('email')?.value }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-[#8E8E8E]">Phone:</p>
+                    <p class="font-medium">{{ checkoutForm.get('phone')?.value }}</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-[#8E8E8E]">Address:</p>
+                    <p class="font-medium">
+                      {{ checkoutForm.get('address')?.value }}, 
+                      {{ checkoutForm.get('city')?.value }}, 
+                      {{ checkoutForm.get('state')?.value }} 
+                      {{ checkoutForm.get('zipCode')?.value }}, 
+                      {{ checkoutForm.get('country')?.value }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Payment Method -->
+              <div>
+                <h3 class="text-lg font-medium mb-4">Payment Method</h3>
+                
+                <div class="flex items-center space-x-2">
+                  <i 
+                    [class]="getPaymentMethodIcon()"
+                    class="text-xl"
+                  ></i>
+                  <span class="font-medium">{{ getPaymentMethodName() }}</span>
+                </div>
+                
+                <div *ngIf="selectedPaymentMethod === 'credit_card'" class="mt-2 text-sm text-[#8E8E8E]">
+                  Card ending in {{ getLastFourDigits() }}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="mt-8 flex justify-between">
+              <button 
+                type="button" 
+                *ngIf="currentStep > 1"
+                class="text-black font-medium border border-black py-3 px-8 rounded-lg hover:bg-[#F4F6F5] transition-colors"
+                (click)="previousStep()"
+              >
+                Back
+              </button>
+              <div></div> <!-- Spacer for when back button isn't shown -->
+              <button 
+                type="button" 
+                *ngIf="currentStep < 3"
+                class="bg-black text-white font-medium py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors"
+                (click)="nextStep()"
+              >
+                Continue
+              </button>
+              <button 
+                type="button" 
+                *ngIf="currentStep === 3"
+                class="bg-black text-white font-medium py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors"
+                (click)="placeOrder()"
+              >
+                Place Order
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Order Confirmation -->
+        <div *ngIf="orderCompleted" class="lg:col-span-2 text-center py-8">
+          <div class="bg-white rounded-xl p-8 shadow-sm">
+            <div class="mb-6">
+              <div class="w-20 h-20 bg-[#EBD96B] rounded-full flex items-center justify-center mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            
+            <h2 class="text-3xl font-bold mb-4">Thank You!</h2>
+            <p class="text-xl mb-2">Your order has been placed.</p>
+            <p class="text-[#8E8E8E] mb-6">Order Number: <span class="font-medium text-black">{{ orderId }}</span></p>
+            
+            <p class="text-sm text-[#8E8E8E] mb-8">
+              We've sent a confirmation email to <span class="font-medium">{{ checkoutForm.get('email')?.value }}</span> 
+              with your order details.
+            </p>
+            
+            <button 
+              class="bg-black text-white font-medium py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors"
+              (click)="continueToHome()"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+        
+        <!-- Right Column: Order Summary -->
+        <div class="lg:col-span-1">
+          <div class="bg-[#F4F6F5] rounded-xl p-6 sticky top-8">
+            <h2 class="text-xl font-bold mb-6">Order Summary</h2>
+            
+            <!-- Order Items -->
+            <div class="space-y-3 mb-6 max-h-60 overflow-y-auto">
+              <div *ngFor="let item of cartItems" class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div class="h-10 w-10 bg-white rounded-lg overflow-hidden flex-shrink-0">
+                    <img [src]="item.imageUrl" [alt]="item.name" class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                    <p class="font-medium text-sm">{{ item.name }}</p>
+                    <p class="text-xs text-[#8E8E8E]">Qty: {{ item.quantity }}</p>
+                  </div>
+                </div>
+                <div class="font-bold text-sm">${{ (item.price * item.quantity).toFixed(2) }}</div>
+              </div>
+            </div>
+            
+            <!-- Divider -->
+            <div class="border-t border-gray-200 my-4"></div>
+            
+            <!-- Price Calculations -->
+            <div class="space-y-3 mb-6">
+              <div class="flex justify-between">
+                <span class="text-[#8E8E8E]">Subtotal</span>
+                <span>${{ cartTotal.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8E8E8E]">Shipping</span>
+                <span *ngIf="shippingCost > 0">${{ shippingCost.toFixed(2) }}</span>
+                <span *ngIf="shippingCost === 0" class="text-green-600">Free</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8E8E8E]">Tax (10%)</span>
+                <span>${{ tax.toFixed(2) }}</span>
+              </div>
+            </div>
+            
+            <!-- Divider -->
+            <div class="border-t border-gray-200 my-4"></div>
+            
+            <!-- Total -->
+            <div class="flex justify-between items-center mb-4">
+              <span class="font-bold text-lg">Total</span>
+              <span class="font-bold text-lg">${{ getOrderTotal().toFixed(2) }}</span>
+            </div>
+            
+            <!-- Payment Policy -->
+            <div class="text-xs text-[#8E8E8E]">
+              <p class="mb-2">
+                By completing your purchase, you agree to our 
+                <a href="#" class="underline hover:text-black">Terms of Service</a> and 
+                <a href="#" class="underline hover:text-black">Privacy Policy</a>.
+              </p>
+              <p>All prices are in USD.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

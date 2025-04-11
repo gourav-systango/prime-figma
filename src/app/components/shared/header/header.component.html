@@ -20,6 +20,16 @@
       
       <!-- Right Side Actions -->
       <div class="flex items-center gap-4">
+        <!-- Cart Icon -->
+        <button (click)="navigateToCart()" class="relative flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span *ngIf="cartItemCount > 0" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ cartItemCount > 9 ? '9+' : cartItemCount }}
+          </span>
+        </button>
+        
         <!-- Auth Buttons (desktop) -->
         <div class="hidden md:flex items-center gap-4">
           <!-- Not logged in -->
@@ -38,16 +48,75 @@
             </button>
           </ng-container>
 
-          <!-- Logged in -->
+          <!-- Logged in - User Menu -->
           <ng-container *ngIf="authService.isAuthenticated()">
-            <div class="flex items-center gap-4">
-              <a routerLink="/profile" class="text-gray-700 hover:text-[#EBD96B] transition-colors">Hello, {{ authService.getCurrentUser()?.name }}</a>
-              <button 
-                (click)="logout()" 
-                class="text-black hover:text-red-500 transition-colors font-medium"
-              >
-                Logout
-              </button>
+            <div class="flex items-center gap-2 relative">
+              <!-- User Avatar with Popup Menu -->
+              <div class="user-menu-container">
+                <button 
+                  #userBtn
+                  type="button"
+                  class="flex items-center focus:outline-none"
+                  (click)="op.toggle($event)"
+                >
+                  <!-- Check if profile picture exists, otherwise show avatar with initials -->
+                  <ng-container *ngIf="getUserAvatar(); else initialAvatar">
+                    <p-avatar 
+                      [image]="getUserAvatar()" 
+                      styleClass="mr-2" 
+                      size="normal" 
+                      shape="circle"
+                      [style]="{'width': '2.5rem', 'height': '2.5rem'}"
+                    ></p-avatar>
+                  </ng-container>
+                  <ng-template #initialAvatar>
+                    <p-avatar 
+                      [label]="getUserInitials()" 
+                      styleClass="mr-2" 
+                      size="normal" 
+                      shape="circle"
+                      [style]="{'width': '2.5rem', 'height': '2.5rem', 'background-color': '#EBD96B', 'color': '#333'}"
+                    ></p-avatar>
+                  </ng-template>
+                  
+                  <!-- User name and arrow down icon -->
+                  <span class="text-gray-800 font-medium mr-1">{{ authService.getCurrentUser()?.name }}</span>
+                  <i class="pi pi-angle-down text-gray-600"></i>
+                </button>
+                
+                <!-- Overlay Panel for User Menu -->
+                <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '250px', background: 'white', padding: '0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'}">
+                  <div class="p-4 border-b border-gray-100">
+                    <h4 class="text-lg font-bold text-black mb-1">{{ authService.getCurrentUser()?.name }}</h4>
+                    <p class="text-[#8E8E8E] text-sm">{{ authService.getCurrentUser()?.email }}</p>
+                  </div>
+                  
+                  <div class="py-2">
+                    <a routerLink="/profile" class="px-4 py-2 flex items-center text-black hover:bg-[#F4F6F5] hover:text-[#EBD96B] transition-colors">
+                      <i class="pi pi-user mr-2 text-[#8E8E8E]"></i>
+                      <span>Profile</span>
+                    </a>
+                    <a routerLink="/profile/orders" class="px-4 py-2 flex items-center text-black hover:bg-[#F4F6F5] hover:text-[#EBD96B] transition-colors">
+                      <i class="pi pi-shopping-bag mr-2 text-[#8E8E8E]"></i>
+                      <span>My Orders</span>
+                    </a>
+                    <a routerLink="/profile/settings" class="px-4 py-2 flex items-center text-black hover:bg-[#F4F6F5] hover:text-[#EBD96B] transition-colors">
+                      <i class="pi pi-cog mr-2 text-[#8E8E8E]"></i>
+                      <span>Account Settings</span>
+                    </a>
+                  </div>
+                  
+                  <div class="border-t border-gray-100 py-2">
+                    <button 
+                      (click)="logout()" 
+                      class="w-full text-left px-4 py-2 flex items-center text-red-600 hover:bg-[#F4F6F5] hover:text-red-700 transition-colors"
+                    >
+                      <i class="pi pi-sign-out mr-2"></i>
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </p-overlayPanel>
+              </div>
             </div>
           </ng-container>
         </div>
@@ -86,6 +155,15 @@
         <a routerLink="/fashion" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Fashion</a>
         <a routerLink="/lifestyle" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Lifestyle</a>
         <a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Favourite</a>
+        <a routerLink="/cart" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          Cart
+          <span *ngIf="cartItemCount > 0" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ cartItemCount > 9 ? '9+' : cartItemCount }}
+          </span>
+        </a>
       </nav>
       
       <!-- Auth Buttons (mobile) -->
@@ -106,14 +184,33 @@
           </button>
         </ng-container>
 
-        <!-- Logged in (mobile) -->
+        <!-- Logged in mobile user menu -->
         <ng-container *ngIf="authService.isAuthenticated()">
-          <a routerLink="/profile" class="text-gray-700 hover:text-[#EBD96B] transition-colors py-2">Hello, {{ authService.getCurrentUser()?.name }}</a>
+          <div class="flex items-center space-x-2 mb-2">
+            <p-avatar 
+              [image]="getUserAvatar()" 
+              [label]="getUserInitials()" 
+              styleClass="mr-2" 
+              [style]="{'width': '2.5rem', 'height': '2.5rem', 'background-color': '#EBD96B', 'color': '#333'}"
+            ></p-avatar>
+            <span class="font-medium">{{ authService.getCurrentUser()?.name }}</span>
+          </div>
+          
+          <!-- Mobile menu items -->
+          <a routerLink="/profile" class="text-black hover:text-[#EBD96B] transition-colors py-2 flex items-center">
+            <i class="pi pi-user mr-2 text-[#8E8E8E]"></i> My Profile
+          </a>
+          <a routerLink="/profile/orders" class="text-black hover:text-[#EBD96B] transition-colors py-2 flex items-center">
+            <i class="pi pi-shopping-bag mr-2 text-[#8E8E8E]"></i> My Orders
+          </a>
+          <a routerLink="/profile/settings" class="text-black hover:text-[#EBD96B] transition-colors py-2 flex items-center">
+            <i class="pi pi-cog mr-2 text-[#8E8E8E]"></i> Account Settings
+          </a>
           <button 
             (click)="logout()" 
-            class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium"
+            class="mt-4 w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center"
           >
-            Logout
+            <i class="pi pi-sign-out mr-2"></i> Logout
           </button>
         </ng-container>
       </div>

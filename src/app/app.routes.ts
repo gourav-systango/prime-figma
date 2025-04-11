@@ -11,10 +11,15 @@ import { AboutComponent } from './components/pages/about/about.component';
 import { ContactComponent } from './components/pages/contact/contact.component';
 import { ForgotPasswordComponent } from './components/pages/forgot-password/forgot-password.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
+import { OrdersComponent } from './components/pages/profile/orders/orders.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'catalogue', component: CataloguePageComponent },
+  { path: 'catalogue/:category', component: CataloguePageComponent },
+  { path: 'product/:id', loadComponent: () => import('./components/catalogue/product-detail/product-detail.component').then(c => c.ProductDetailComponent) },
+  { path: 'cart', loadComponent: () => import('./components/cart/cart-page.component').then(c => c.CartPageComponent) },
+  { path: 'checkout', loadComponent: () => import('./components/checkout/checkout-page.component').then(c => c.CheckoutPageComponent) },
   { path: 'fashion', component: FashionPageComponent },
   { path: 'lifestyle', component: LifestyleComponent },
   { 
@@ -26,6 +31,16 @@ export const routes: Routes = [
     path: 'profile', 
     component: ProfileComponent,
     canActivate: [AuthGuardService]  // Protect this route with auth guard
+  },
+  {
+    path: 'profile/orders',
+    component: OrdersComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'profile/settings',
+    loadComponent: () => import('./components/pages/profile/settings/settings.component').then(c => c.SettingsComponent),
+    canActivate: [AuthGuardService]
   },
   
   // Authentication routes

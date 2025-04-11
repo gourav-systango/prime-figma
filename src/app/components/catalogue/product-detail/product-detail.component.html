@@ -1,0 +1,143 @@
+<div class="container mx-auto px-4 py-12" *ngIf="product">
+  <!-- Breadcrumb -->
+  <div class="mb-6">
+    <div class="flex items-center text-sm text-gray-500">
+      <a routerLink="/catalogue" class="hover:text-black">Catalogue</a>
+      <span class="mx-2">/</span>
+      <a [routerLink]="['/catalogue', product.category]" class="hover:text-black">{{ product.category | titlecase }}</a>
+      <span class="mx-2">/</span>
+      <span class="text-black">{{ product.name }}</span>
+    </div>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <!-- Product Image -->
+    <div class="relative aspect-square bg-[#F4F6F5] rounded-xl overflow-hidden">
+      <img 
+        [src]="product.imageUrl" 
+        [alt]="product.name" 
+        class="w-full h-full object-cover"
+      >
+      
+      <!-- Badges -->
+      <div class="absolute top-4 left-4 flex flex-col gap-2">
+        <span 
+          *ngIf="product.isNew" 
+          class="bg-[#EBD96B] text-black text-xs font-bold px-3 py-1 rounded-full"
+        >
+          NEW
+        </span>
+        <span 
+          *ngIf="getDiscountPercentage(product) > 0" 
+          class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full"
+        >
+          -{{ getDiscountPercentage(product) }}%
+        </span>
+      </div>
+    </div>
+    
+    <!-- Product Info -->
+    <div>
+      <h1 class="text-3xl font-bold mb-2">{{ product.name }}</h1>
+      <p class="text-[#8E8E8E] mb-4">{{ product.description }}</p>
+      
+      <!-- Rating -->
+      <div class="flex items-center gap-2 mb-6">
+        <p-rating 
+          [(ngModel)]="product.rating" 
+          [readonly]="true" 
+          [stars]="5"
+        ></p-rating>
+        <span class="text-sm text-[#8E8E8E]">({{ product.reviewCount }} reviews)</span>
+      </div>
+      
+      <!-- Price -->
+      <div class="flex items-center gap-3 mb-8">
+        <span class="text-2xl font-bold">${{ product.discountedPrice || product.price }}</span>
+        <span *ngIf="product.discountedPrice" class="text-[#8E8E8E] text-lg line-through">${{ product.price }}</span>
+      </div>
+      
+      <!-- Colors -->
+      <div *ngIf="product.colors.length > 0" class="mb-6">
+        <h3 class="text-sm font-medium mb-2">COLOR</h3>
+        <div class="flex gap-2">
+          <div 
+            *ngFor="let color of product.colors"
+            class="w-8 h-8 rounded-full border-2 cursor-pointer"
+            [style.background-color]="color"
+            [ngClass]="{'border-gray-400': color !== selectedColor, 'border-black': color === selectedColor}"
+            (click)="selectColor(color)"
+          ></div>
+        </div>
+      </div>
+      
+      <!-- Sizes -->
+      <div *ngIf="product.sizes.length > 0" class="mb-8">
+        <h3 class="text-sm font-medium mb-2">SIZE</h3>
+        <div class="flex flex-wrap gap-2">
+          <div 
+            *ngFor="let size of product.sizes"
+            class="min-w-[40px] h-10 flex items-center justify-center px-3 border rounded cursor-pointer"
+            [ngClass]="{'border-black bg-black text-white': size === selectedSize, 'border-gray-300 hover:border-black': size !== selectedSize}"
+            (click)="selectSize(size)"
+          >
+            {{ size }}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quantity -->
+      <div class="mb-8">
+        <h3 class="text-sm font-medium mb-2">QUANTITY</h3>
+        <div class="flex items-center border border-gray-300 rounded-md w-fit">
+          <button 
+            (click)="decreaseQuantity()"
+            class="px-4 py-2 hover:bg-gray-100 text-xl font-medium"
+            [disabled]="quantity <= 1"
+          >
+            -
+          </button>
+          <span class="w-12 text-center">{{ quantity }}</span>
+          <button 
+            (click)="increaseQuantity()"
+            class="px-4 py-2 hover:bg-gray-100 text-xl font-medium"
+          >
+            +
+          </button>
+        </div>
+      </div>
+      
+      <!-- Add to Cart -->
+      <button
+        (click)="addToCart()"
+        class="bg-black text-white w-full py-3 rounded-lg hover:bg-gray-800 transition-colors mb-4"
+      >
+        Add to Cart
+      </button>
+      
+      <!-- Add to Wishlist -->
+      <button
+        (click)="addToWishlist()"
+        class="flex items-center justify-center gap-2 w-full py-3 border border-black rounded-lg hover:bg-gray-100 transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        Add to Wishlist
+      </button>
+      
+      <!-- Tags -->
+      <div class="mt-8">
+        <p class="text-sm text-[#8E8E8E]">
+          Category: <a [routerLink]="['/catalogue', product.category]" class="hover:underline">{{ product.category | titlecase }}</a>
+        </p>
+        <p class="text-sm text-[#8E8E8E] mt-1">
+          Tags: 
+          <span *ngFor="let tag of product.tags; let last = last">
+            {{ tag | titlecase }}{{ !last ? ', ' : '' }}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,14 +1,17 @@
 <main class="catalogue-page">
+  <!-- Hero section with dynamic title based on current category -->
   <section class="catalogue-hero">
-    <div class="container">
-      <h1>Explore Our Collections</h1>
-      <p>Browse through our carefully curated categories of stylish essentials</p>
+    <div class="container mx-auto px-4">
+      <h1 *ngIf="!currentCategory">Explore Our Collections</h1>
+      <h1 *ngIf="currentCategory">{{ currentCategory | titlecase }}</h1>
+      <p *ngIf="!currentCategory">Browse through our carefully curated categories of stylish essentials</p>
+      <p *ngIf="currentCategory">Browse our selection of {{ currentCategory | titlecase }} items</p>
     </div>
   </section>
 
-  <section class="section-padding bg-white pt-16 pb-20">
+  <!-- Categories Grid - Shown only when not filtering by category -->
+  <section *ngIf="showCategoryGrid" class="section-padding bg-white pt-16 pb-20">
     <div class="container mx-auto px-4">
-      <!-- Categories Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-[90px]">
         <div *ngFor="let category of categories" class="flex flex-col gap-7 category-item">
           <div class="relative rounded-[20px] overflow-hidden aspect-[1/1.2]">
@@ -20,11 +23,28 @@
           </div>
           <div class="flex flex-col gap-[7px]">
             <h3 class="text-[32px] font-medium text-[#191919] leading-[1.5625] tracking-[-0.04em]">{{category.title}}</h3>
-            <div class="flex items-center gap-[180px]">
+            <div class="flex items-center gap-[180px] cursor-pointer" (click)="onCategoryClick(category.id)">
               <span class="text-[24px] font-medium text-[#7F7F7F] leading-[2.0833] tracking-[-0.04em] explore-text">Explore Now!</span>
               <img src="images/arrow.svg" alt="Arrow" class="w-8 arrow-icon">
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Product List Section - Shown only when filtering by category -->
+  <section *ngIf="!showCategoryGrid" class="section-padding bg-white pt-16 pb-20">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Filters Column -->
+        <div class="lg:col-span-1">
+          <app-product-filters></app-product-filters>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="lg:col-span-3">
+          <app-product-list [products]="products"></app-product-list>
         </div>
       </div>
     </div>

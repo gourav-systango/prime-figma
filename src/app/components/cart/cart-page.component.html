@@ -1,0 +1,169 @@
+<section class="bg-black text-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-black mb-4">Shopping Cart</h1>
+      <p class="text-lg text-[#8E8E8E]">Review and update your items before checkout</p>
+    </div>
+  </div>
+</section>
+
+<section class="py-12 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Empty Cart State -->
+      <div *ngIf="cartItems.length === 0" class="text-center py-16">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <h2 class="text-2xl font-bold mb-2">Your Cart is Empty</h2>
+        <p class="text-[#8E8E8E] mb-6">Looks like you haven't added any products to your cart yet.</p>
+        <a routerLink="/catalogue" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors">
+          Continue Shopping
+        </a>
+      </div>
+      
+      <!-- Cart with Items -->
+      <div *ngIf="cartItems.length > 0" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Cart Items Column -->
+        <div class="lg:col-span-2">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Cart Items ({{ cartItems.length }})</h2>
+            <button 
+              (click)="clearCart()"
+              class="text-[#8E8E8E] hover:text-black transition-colors text-sm"
+            >
+              Clear All
+            </button>
+          </div>
+          
+          <!-- Cart Item Cards -->
+          <div class="space-y-4">
+            <div *ngFor="let item of cartItems" class="bg-[#F4F6F5] rounded-xl p-4 flex flex-col sm:flex-row gap-4">
+              <!-- Product Image -->
+              <div class="flex-shrink-0 h-24 w-24 bg-white rounded-lg overflow-hidden">
+                <img [src]="item.imageUrl" [alt]="item.name" class="w-full h-full object-cover">
+              </div>
+              
+              <!-- Product Details -->
+              <div class="flex-1">
+                <div class="flex justify-between">
+                  <h3 class="font-bold">{{ item.name }}</h3>
+                  <button 
+                    (click)="removeItem(item.id)" 
+                    class="text-[#8E8E8E] hover:text-black"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <!-- Product Attributes -->
+                <div class="text-sm text-[#8E8E8E] mt-1">
+                  <p *ngIf="item.size">Size: {{ item.size }}</p>
+                  <p *ngIf="item.color">Color: {{ item.color }}</p>
+                </div>
+                
+                <!-- Price and Quantity -->
+                <div class="flex justify-between items-center mt-4">
+                  <div class="font-bold">${{ item.price.toFixed(2) }}</div>
+                  
+                  <!-- Quantity Controls -->
+                  <div class="flex items-center border border-gray-300 rounded-md">
+                    <button 
+                      (click)="decreaseQuantity(item)"
+                      class="px-3 py-1 hover:bg-gray-100"
+                      [disabled]="item.quantity <= 1"
+                    >
+                      -
+                    </button>
+                    <input 
+                      type="number" 
+                      [(ngModel)]="item.quantity" 
+                      (change)="updateQuantity(item, $event)"
+                      min="1" 
+                      class="w-12 text-center border-0 focus:ring-0"
+                    >
+                    <button 
+                      (click)="increaseQuantity(item)"
+                      class="px-3 py-1 hover:bg-gray-100"
+                    >
+                      +
+                    </button>
+                  </div>
+                  
+                  <!-- Item Total -->
+                  <div class="font-bold">${{ (item.price * item.quantity).toFixed(2) }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Continue Shopping -->
+          <div class="mt-8">
+            <a routerLink="/catalogue" class="text-black font-medium hover:text-[#EBD96B] transition-colors flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Continue Shopping
+            </a>
+          </div>
+        </div>
+        
+        <!-- Order Summary Column -->
+        <div class="lg:col-span-1">
+          <div class="bg-[#F4F6F5] rounded-xl p-6 sticky top-8">
+            <h2 class="text-xl font-bold mb-6">Order Summary</h2>
+            
+            <!-- Order Calculations -->
+            <div class="space-y-3 mb-6">
+              <div class="flex justify-between">
+                <span class="text-[#8E8E8E]">Subtotal</span>
+                <span>${{ cartTotal.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8E8E8E]">Shipping</span>
+                <span *ngIf="shippingCost > 0">${{ shippingCost.toFixed(2) }}</span>
+                <span *ngIf="shippingCost === 0" class="text-green-600">Free</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8E8E8E]">Tax (10%)</span>
+                <span>${{ tax.toFixed(2) }}</span>
+              </div>
+              <div *ngIf="shippingCost > 0" class="text-sm text-[#8E8E8E] mt-1">
+                Free shipping on orders over $100!
+              </div>
+            </div>
+            
+            <!-- Divider -->
+            <div class="border-t border-gray-200 my-4"></div>
+            
+            <!-- Total -->
+            <div class="flex justify-between items-center mb-6">
+              <span class="font-bold text-lg">Total</span>
+              <span class="font-bold text-lg">${{ getOrderTotal().toFixed(2) }}</span>
+            </div>
+            
+            <!-- Checkout Button -->
+            <button 
+              class="w-full bg-black text-white py-3 rounded-lg hover:bg-opacity-80 transition-colors"
+              (click)="proceedToCheckout()"
+              [disabled]="cartItems.length === 0"
+            >
+              Proceed to Checkout
+            </button>
+            
+            <!-- Secure Checkout Notice -->
+            <div class="flex items-center justify-center mt-4 text-sm text-[#8E8E8E]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              Secure Checkout
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

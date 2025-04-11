@@ -1,0 +1,33 @@
+:host {
+  ::ng-deep {
+    // Style overrides for overlay panel
+    .p-overlaypanel {
+      border-radius: 0.75rem;
+      
+      .p-overlaypanel-content {
+        padding: 0;
+      }
+      
+      .p-overlaypanel-close {
+        background: transparent;
+        color: #8E8E8E;
+        border: none;
+        
+        &:hover {
+          background: #F4F6F5;
+          color: #000;
+        }
+      }
+    }
+  }
+}
+
+// Active nav link
+a.active {
+  color: #EBD96B;
+}
+
+// Transitions and hovers
+.transition-colors {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
