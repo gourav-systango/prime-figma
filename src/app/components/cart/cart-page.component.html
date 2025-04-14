@@ -7,6 +7,10 @@
   </div>
 </section>
 
+<!-- PrimeNG Dialogs -->
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '450px'}" [baseZIndex]="10000"></p-confirmDialog>
+
 <section class="py-12 bg-white">
   <div class="container mx-auto px-4">
     <div class="max-w-6xl mx-auto">
@@ -60,9 +64,17 @@
                 </div>
                 
                 <!-- Product Attributes -->
-                <div class="text-sm text-[#8E8E8E] mt-1">
-                  <p *ngIf="item.size">Size: {{ item.size }}</p>
-                  <p *ngIf="item.color">Color: {{ item.color }}</p>
+                <div class="text-sm text-[#8E8E8E] mt-1 flex gap-3">
+                  <div *ngIf="item.size">Size: <span class="font-medium">{{ item.size }}</span></div>
+                  <div *ngIf="item.color">Color: <span class="font-medium">{{ item.color }}</span></div>
+                  
+                  <!-- Edit Options Button -->
+                  <button 
+                    (click)="openEditDialog(item)" 
+                    class="text-blue-600 hover:text-blue-800 font-medium text-xs"
+                  >
+                    Edit Options
+                  </button>
                 </div>
                 
                 <!-- Price and Quantity -->
@@ -166,4 +178,105 @@
       </div>
     </div>
   </div>
-</section> 
+</section>
+
+<!-- Edit Item Dialog -->
+<p-dialog 
+  [(visible)]="showEditDialog" 
+  [style]="{width: '450px'}" 
+  [modal]="true" 
+  [draggable]="false"
+  [resizable]="false"
+  header="Edit Item Options"
+>
+  <div class="p-4" *ngIf="editingItem && currentProduct">
+    <div class="flex mb-6">
+      <!-- Product Image -->
+      <div class="w-20 h-20 bg-[#F4F6F5] rounded-lg overflow-hidden mr-4">
+        <img [src]="editingItem.imageUrl" [alt]="editingItem.name" class="w-full h-full object-cover">
+      </div>
+      
+      <!-- Product Info -->
+      <div>
+        <h3 class="font-bold text-lg">{{ editingItem.name }}</h3>
+        <p class="text-[#8E8E8E] text-sm">${{ editingItem.price.toFixed(2) }}</p>
+      </div>
+    </div>
+    
+    <!-- Color Selection -->
+    <div *ngIf="availableColors.length > 0" class="mb-6">
+      <h4 class="text-sm font-medium mb-2">Color</h4>
+      <div class="flex flex-wrap gap-2">
+        <div 
+          *ngFor="let color of availableColors"
+          class="w-8 h-8 rounded-full border-2 cursor-pointer"
+          [style.background-color]="color"
+          [class.border-gray-400]="selectedColor !== color"
+          [class.border-black]="selectedColor === color"
+          (click)="selectColor(color)"
+        ></div>
+      </div>
+    </div>
+    
+    <!-- Size Selection -->
+    <div *ngIf="availableSizes.length > 0" class="mb-6">
+      <h4 class="text-sm font-medium mb-2">Size</h4>
+      <div class="flex flex-wrap gap-2">
+        <div 
+          *ngFor="let size of availableSizes"
+          class="min-w-[40px] h-10 flex items-center justify-center px-3 border rounded cursor-pointer"
+          [class.border-black]="selectedSize === size"
+          [class.bg-black]="selectedSize === size"
+          [class.text-white]="selectedSize === size"
+          [class.border-gray-300]="selectedSize !== size"
+          (click)="selectSize(size)"
+        >
+          {{ size }}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Quantity Selection -->
+    <div class="mb-6">
+      <h4 class="text-sm font-medium mb-2">Quantity</h4>
+      <div class="flex items-center border border-gray-300 rounded-md w-fit">
+        <button 
+          (click)="selectedQuantity = selectedQuantity > 1 ? selectedQuantity - 1 : 1"
+          class="px-4 py-2 hover:bg-gray-100 text-xl font-medium"
+          [disabled]="selectedQuantity <= 1"
+        >
+          -
+        </button>
+        <input 
+          type="number" 
+          [(ngModel)]="selectedQuantity" 
+          min="1" 
+          class="w-12 text-center border-0 focus:ring-0"
+        >
+        <button 
+          (click)="selectedQuantity = selectedQuantity + 1"
+          class="px-4 py-2 hover:bg-gray-100 text-xl font-medium"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      label="Cancel" 
+      icon="pi pi-times" 
+      class="p-button-text" 
+      (click)="showEditDialog = false"
+    ></button>
+    <button 
+      pButton 
+      label="Save Changes" 
+      icon="pi pi-check" 
+      class="p-button-primary" 
+      (click)="saveItemChanges()"
+    ></button>
+  </ng-template>
+</p-dialog> 

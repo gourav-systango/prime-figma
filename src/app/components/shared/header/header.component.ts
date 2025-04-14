@@ -131,11 +131,11 @@ export class HeaderComponent implements OnInit {
     } else {
       // User not logged in, show auth modal
       this.authModalService.openModal('signin');
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Authentication Required',
-        detail: 'Please log in to access your wishlist'
-      });
+      // this.messageService.add({
+      //   severity: 'info',
+      //   summary: 'Authentication Required',
+      //   detail: 'Please log in to access your wishlist'
+      // });
     }
 
     // Close mobile menu if open
@@ -150,11 +150,11 @@ export class HeaderComponent implements OnInit {
     } else {
       // User not logged in, show auth modal
       this.authModalService.openModal('signin');
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Authentication Required',
-        detail: 'Please log in to access your favourites'
-      });
+      // this.messageService.add({
+      //   severity: 'info',
+      //   summary: 'Authentication Required',
+      //   detail: 'Please log in to access your favourites'
+      // });
     }
 
     // Close mobile menu if open

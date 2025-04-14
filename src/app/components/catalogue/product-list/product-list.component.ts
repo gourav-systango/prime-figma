@@ -11,11 +11,23 @@ import { AuthService } from '../../../services/auth.service';
 import { AuthModalService } from '../../../services/auth-modal.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, RatingModule, FormsModule, ToastModule],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    RatingModule, 
+    FormsModule, 
+    ToastModule, 
+    OverlayPanelModule,
+    DialogModule,
+    ButtonModule
+  ],
   providers: [MessageService],
   templateUrl: './product-list.component.html',
 })
@@ -28,6 +40,16 @@ export class ProductListComponent implements OnInit {
   // Track which products are in the wishlist and favorites
   wishlistProductIds: Set<string> = new Set<string>();
   favouriteProductIds: Set<string> = new Set<string>();
+  
+  // Size selection
+  selectedSizes: { [productId: string]: string } = {};
+  selectedColors: { [productId: string]: string } = {};
+  
+  // For size dialog
+  showSizeDialog = false;
+  currentProduct?: Product;
+  selectedSize?: string;
+  selectedColor?: string;
   
   constructor(
     private cartService: CartService,
@@ -137,9 +159,69 @@ export class ProductListComponent implements OnInit {
     });
   }
   
+  openSizeDialog(product: Product, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    this.currentProduct = product;
+    
+    // Set default selections if product has colors/sizes
+    if (product.sizes.length > 0) {
+      this.selectedSize = this.selectedSizes[product.id] || product.sizes[0];
+    } else {
+      this.selectedSize = undefined;
+    }
+    
+    if (product.colors.length > 0) {
+      this.selectedColor = this.selectedColors[product.id] || product.colors[0];
+    } else {
+      this.selectedColor = undefined;
+    }
+    
+    this.showSizeDialog = true;
+  }
+  
+  selectSize(size: string): void {
+    this.selectedSize = size;
+    if (this.currentProduct) {
+      this.selectedSizes[this.currentProduct.id] = size;
+    }
+  }
+  
+  selectColor(color: string): void {
+    this.selectedColor = color;
+    if (this.currentProduct) {
+      this.selectedColors[this.currentProduct.id] = color;
+    }
+  }
+  
+  addToCartWithOptions(): void {
+    if (!this.currentProduct) return;
+    
+    this.cartService.addToCart(
+      this.currentProduct, 
+      1, 
+      this.selectedColor, 
+      this.selectedSize
+    );
+    
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Added to Cart',
+      detail: `${this.currentProduct.name} has been added to your cart.`
+    });
+    
+    this.showSizeDialog = false;
+  }
+  
   addToCart(product: Product, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
+    
+    if (product.sizes.length > 0 || product.colors.length > 0) {
+      this.openSizeDialog(product, event);
+      return;
+    }
     
     this.cartService.addToCart(product);
     
@@ -154,6 +236,13 @@ export class ProductListComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     
+    if (product.sizes.length > 0 || product.colors.length > 0) {
+      // We need to select options first
+      this.currentProduct = product;
+      this.openSizeDialog(product, event);
+      return;
+    }
+    
     // Add the product to cart
     this.cartService.addToCart(product);
     
@@ -163,6 +252,33 @@ export class ProductListComponent implements OnInit {
       summary: 'Processing',
       detail: 'Taking you to checkout...'
     });
+    
+    // Navigate to checkout page
+    setTimeout(() => {
+      this.router.navigate(['/checkout']);
+    }, 500);
+  }
+  
+  buyNowWithOptions(): void {
+    if (!this.currentProduct) return;
+    
+    // Add to cart with selected options
+    this.cartService.addToCart(
+      this.currentProduct, 
+      1, 
+      this.selectedColor, 
+      this.selectedSize
+    );
+    
+    // Show a brief confirmation message
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Processing',
+      detail: 'Taking you to checkout...'
+    });
+    
+    // Close dialog
+    this.showSizeDialog = false;
     
     // Navigate to checkout page
     setTimeout(() => {

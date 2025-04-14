@@ -109,14 +109,20 @@
             *ngFor="let color of product.colors" 
             class="w-4 h-4 rounded-full border border-gray-200"
             [style.background-color]="color"
+            [class.ring-2]="selectedColors[product.id] === color"
+            [class.ring-black]="selectedColors[product.id] === color"
+            (click)="selectColor(color); selectedColors[product.id] = color"
           ></div>
         </div>
         
         <!-- Available Sizes -->
-        <div *ngIf="product.sizes.length > 0" class="mt-3 flex gap-1">
+        <div *ngIf="product.sizes.length > 0" class="mt-3 flex flex-wrap gap-1">
           <span 
             *ngFor="let size of product.sizes" 
-            class="text-xs font-medium px-2 py-1 rounded bg-gray-100"
+            class="text-xs font-medium px-2 py-1 rounded cursor-pointer"
+            [class.bg-[#EBD96B]]="selectedSizes[product.id] === size"
+            [class.bg-gray-100]="selectedSizes[product.id] !== size"
+            (click)="selectSize(size); selectedSizes[product.id] = size"
           >
             {{ size }}
           </span>
@@ -146,4 +152,86 @@
 <div *ngIf="products.length === 0" class="py-12 text-center">
   <h3 class="text-xl font-medium mb-2">No products found</h3>
   <p class="text-gray-500">Try adjusting your filters or searching for different products.</p>
-</div> 
+</div>
+
+<!-- Size Selection Dialog -->
+<p-dialog 
+  [(visible)]="showSizeDialog" 
+  [style]="{width: '450px'}" 
+  [modal]="true" 
+  [draggable]="false"
+  [resizable]="false"
+  header="Select Options"
+>
+  <div class="p-4" *ngIf="currentProduct">
+    <div class="flex mb-6">
+      <!-- Product Image -->
+      <div class="w-20 h-20 bg-[#F4F6F5] rounded-lg overflow-hidden mr-4">
+        <img [src]="currentProduct.imageUrl" [alt]="currentProduct.name" class="w-full h-full object-cover">
+      </div>
+      
+      <!-- Product Info -->
+      <div>
+        <h3 class="font-bold text-lg">{{ currentProduct.name }}</h3>
+        <p class="text-[#8E8E8E] text-sm">{{ currentProduct.discountedPrice || currentProduct.price | currency }}</p>
+      </div>
+    </div>
+    
+    <!-- Color Selection -->
+    <div *ngIf="currentProduct.colors.length > 0" class="mb-6">
+      <h4 class="text-sm font-medium mb-2">Color</h4>
+      <div class="flex flex-wrap gap-2">
+        <div 
+          *ngFor="let color of currentProduct.colors"
+          class="w-8 h-8 rounded-full border-2 cursor-pointer"
+          [style.background-color]="color"
+          [class.border-gray-400]="selectedColor !== color"
+          [class.border-black]="selectedColor === color"
+          (click)="selectColor(color)"
+        ></div>
+      </div>
+    </div>
+    
+    <!-- Size Selection -->
+    <div *ngIf="currentProduct.sizes.length > 0" class="mb-6">
+      <h4 class="text-sm font-medium mb-2">Size</h4>
+      <div class="flex flex-wrap gap-2">
+        <div 
+          *ngFor="let size of currentProduct.sizes"
+          class="min-w-[40px] h-10 flex items-center justify-center px-3 border rounded cursor-pointer"
+          [class.border-black]="selectedSize === size"
+          [class.bg-black]="selectedSize === size"
+          [class.text-white]="selectedSize === size"
+          [class.border-gray-300]="selectedSize !== size"
+          (click)="selectSize(size)"
+        >
+          {{ size }}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      label="Cancel" 
+      icon="pi pi-times" 
+      class="p-button-text" 
+      (click)="showSizeDialog = false"
+    ></button>
+    <button 
+      pButton 
+      label="Add to Cart" 
+      icon="pi pi-shopping-cart" 
+      class="p-button-dark" 
+      (click)="addToCartWithOptions()"
+    ></button>
+    <button 
+      pButton 
+      label="Buy Now" 
+      icon="pi pi-check" 
+      class="p-button-warning" 
+      (click)="buyNowWithOptions()"
+    ></button>
+  </ng-template>
+</p-dialog> 
