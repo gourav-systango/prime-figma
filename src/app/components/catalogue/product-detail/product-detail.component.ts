@@ -5,18 +5,21 @@ import { ProductService } from '../../../services/product.service';
 import { CartService } from '../../../services/cart.service';
 import { WishlistService } from '../../../services/wishlist.service';
 import { FavouritesService } from '../../../services/favourites.service';
+import { AuthService } from '../../../services/auth.service';
+import { AuthModalService } from '../../../services/auth-modal.service';
 import { Product } from '../../../interfaces/product.interface';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, RatingModule, FormsModule, ToastModule],
+  imports: [CommonModule, RouterModule, RatingModule, FormsModule, ToastModule, ConfirmDialogModule],
   templateUrl: './product-detail.component.html',
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   styles: []
 })
 export class ProductDetailComponent implements OnInit {
@@ -34,7 +37,10 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private favouritesService: FavouritesService,
-    private messageService: MessageService
+    private authService: AuthService,
+    private authModalService: AuthModalService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
   
   ngOnInit(): void {
@@ -98,34 +104,73 @@ export class ProductDetailComponent implements OnInit {
     }
   }
   
+  buyNow(): void {
+    if (!this.product) return;
+    
+    // First add the product to cart
+    this.cartService.addToCart(this.product, this.quantity, this.selectedColor, this.selectedSize);
+    
+    // Show a brief confirmation message
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Processing',
+      detail: 'Taking you to checkout...'
+    });
+    
+    // Navigate to checkout page
+    setTimeout(() => {
+      this.router.navigate(['/checkout']);
+    }, 500);
+  }
+  
   toggleWishlist(): void {
-    if (this.product) {
-      this.wishlistService.toggleWishlistItem(this.product);
-      this.isInWishlist = !this.isInWishlist;
-      
+    if (!this.product) return;
+    
+    if (!this.authService.isAuthenticated()) {
+      this.authModalService.openModal('signin');
       this.messageService.add({
-        severity: this.isInWishlist ? 'success' : 'info',
-        summary: this.isInWishlist ? 'Added to Wishlist' : 'Removed from Wishlist',
-        detail: this.isInWishlist ? 
-          `${this.product.name} has been added to your wishlist for later purchase.` : 
-          `${this.product.name} has been removed from your wishlist.`
+        severity: 'info',
+        summary: 'Authentication Required',
+        detail: 'Please log in to save items to your wishlist'
       });
+      return;
     }
+    
+    this.wishlistService.toggleWishlistItem(this.product);
+    this.isInWishlist = !this.isInWishlist;
+    
+    this.messageService.add({
+      severity: this.isInWishlist ? 'success' : 'info',
+      summary: this.isInWishlist ? 'Added to Wishlist' : 'Removed from Wishlist',
+      detail: this.isInWishlist ? 
+        `${this.product.name} has been added to your wishlist for later purchase.` : 
+        `${this.product.name} has been removed from your wishlist.`
+    });
   }
   
   toggleFavourites(): void {
-    if (this.product) {
-      this.favouritesService.toggleFavouriteItem(this.product);
-      this.isInFavourites = !this.isInFavourites;
-      
+    if (!this.product) return;
+    
+    if (!this.authService.isAuthenticated()) {
+      this.authModalService.openModal('signin');
       this.messageService.add({
-        severity: this.isInFavourites ? 'success' : 'info',
-        summary: this.isInFavourites ? 'Added to Favourites' : 'Removed from Favourites',
-        detail: this.isInFavourites ? 
-          `${this.product.name} has been added to your favourites.` : 
-          `${this.product.name} has been removed from your favourites.`
+        severity: 'info',
+        summary: 'Authentication Required',
+        detail: 'Please log in to add items to your favourites'
       });
+      return;
     }
+    
+    this.favouritesService.toggleFavouriteItem(this.product);
+    this.isInFavourites = !this.isInFavourites;
+    
+    this.messageService.add({
+      severity: this.isInFavourites ? 'success' : 'info',
+      summary: this.isInFavourites ? 'Added to Favourites' : 'Removed from Favourites',
+      detail: this.isInFavourites ? 
+        `${this.product.name} has been added to your favourites.` : 
+        `${this.product.name} has been removed from your favourites.`
+    });
   }
 
   goToCart(): void {

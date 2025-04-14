@@ -66,6 +66,17 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
           </button>
+          
+          <!-- Buy Now Button -->
+          <button 
+            (click)="buyNow(product, $event)"
+            class="bg-[#EBD96B] p-2 rounded-full shadow-md hover:bg-[#e0c952] transition-colors"
+            title="Buy Now"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          </button>
         </div>
       </div>
       
@@ -109,6 +120,22 @@
           >
             {{ size }}
           </span>
+        </div>
+        
+        <!-- Action Buttons (visible on desktop) -->
+        <div class="mt-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button 
+            (click)="addToCart(product, $event)" 
+            class="flex-1 bg-black text-white py-2 text-sm font-medium rounded hover:bg-gray-800 transition-colors"
+          >
+            Add to Cart
+          </button>
+          <button 
+            (click)="buyNow(product, $event)" 
+            class="flex-1 bg-[#EBD96B] text-black py-2 text-sm font-medium rounded hover:bg-[#e0c952] transition-colors"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
     </div>

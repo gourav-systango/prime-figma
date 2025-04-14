@@ -11,6 +11,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,10 +26,13 @@ import { Router } from '@angular/router';
     OverlayPanelModule,
     ButtonModule,
     AvatarModule,
-    BadgeModule
+    BadgeModule,
+    ToastModule,
+    ConfirmDialogModule
   ],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class HeaderComponent implements OnInit {
   isMobileMenuOpen = false;
@@ -40,6 +46,7 @@ export class HeaderComponent implements OnInit {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private favouritesService: FavouritesService,
+    private messageService: MessageService,
     private router: Router
   ) {}
 
@@ -74,14 +81,23 @@ export class HeaderComponent implements OnInit {
     // Here we don't need to do anything extra as our auth service
     // already handles the authentication state
     
-    // Show a success message
-    alert(this.authModalService.modalMode === 'signin' 
-      ? 'Successfully signed in!' 
-      : 'Account created successfully!');
+    // Show a success message using Toast instead of alert
+    this.messageService.add({
+      severity: 'success',
+      summary: this.authModalService.modalMode === 'signin' ? 'Sign In Successful' : 'Account Created',
+      detail: this.authModalService.modalMode === 'signin' 
+        ? 'Welcome back! You are now signed in.' 
+        : 'Your account has been created successfully!'
+    });
   }
   
   logout(): void {
     this.authService.logout();
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Signed Out',
+      detail: 'You have been signed out successfully'
+    });
     this.router.navigate(['/']);
   }
   
@@ -110,7 +126,18 @@ export class HeaderComponent implements OnInit {
   }
   
   navigateToWishlist(): void {
-    this.router.navigate(['/wishlist']);
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/wishlist']);
+    } else {
+      // User not logged in, show auth modal
+      this.authModalService.openModal('signin');
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Authentication Required',
+        detail: 'Please log in to access your wishlist'
+      });
+    }
+
     // Close mobile menu if open
     if (this.isMobileMenuOpen) {
       this.isMobileMenuOpen = false;
@@ -118,7 +145,18 @@ export class HeaderComponent implements OnInit {
   }
   
   navigateToFavourites(): void {
-    this.router.navigate(['/favourite']);
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/favourite']);
+    } else {
+      // User not logged in, show auth modal
+      this.authModalService.openModal('signin');
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Authentication Required',
+        detail: 'Please log in to access your favourites'
+      });
+    }
+
     // Close mobile menu if open
     if (this.isMobileMenuOpen) {
       this.isMobileMenuOpen = false;

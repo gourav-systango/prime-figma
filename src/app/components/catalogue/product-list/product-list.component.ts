@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Product } from '../../../interfaces/product.interface';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../services/cart.service';
 import { WishlistService } from '../../../services/wishlist.service';
 import { FavouritesService } from '../../../services/favourites.service';
+import { AuthService } from '../../../services/auth.service';
+import { AuthModalService } from '../../../services/auth-modal.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
@@ -31,7 +33,10 @@ export class ProductListComponent implements OnInit {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private favouritesService: FavouritesService,
-    private messageService: MessageService
+    private authService: AuthService,
+    private authModalService: AuthModalService,
+    private messageService: MessageService,
+    private router: Router
   ) {}
   
   ngOnInit(): void {
@@ -70,6 +75,16 @@ export class ProductListComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     
+    if (!this.authService.isAuthenticated()) {
+      this.authModalService.openModal('signin');
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Authentication Required',
+        detail: 'Please log in to save items to your wishlist'
+      });
+      return;
+    }
+    
     this.wishlistService.toggleWishlistItem(product);
     const isNowInWishlist = !this.isInWishlist(product.id);
     
@@ -92,6 +107,16 @@ export class ProductListComponent implements OnInit {
   toggleFavourites(product: Product, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
+    
+    if (!this.authService.isAuthenticated()) {
+      this.authModalService.openModal('signin');
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Authentication Required',
+        detail: 'Please log in to add items to your favourites'
+      });
+      return;
+    }
     
     this.favouritesService.toggleFavouriteItem(product);
     const isNowInFavourites = !this.isInFavourites(product.id);
@@ -123,5 +148,25 @@ export class ProductListComponent implements OnInit {
       summary: 'Added to Cart',
       detail: `${product.name} has been added to your cart.`
     });
+  }
+  
+  buyNow(product: Product, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Add the product to cart
+    this.cartService.addToCart(product);
+    
+    // Show a brief confirmation message
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Processing',
+      detail: 'Taking you to checkout...'
+    });
+    
+    // Navigate to checkout page
+    setTimeout(() => {
+      this.router.navigate(['/checkout']);
+    }, 500);
   }
 } 

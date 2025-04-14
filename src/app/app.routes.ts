@@ -25,16 +25,18 @@ export const routes: Routes = [
   { path: 'lifestyle', component: LifestyleComponent },
   { 
     path: 'favourite', 
-    component: FavouriteComponent
+    component: FavouriteComponent,
+    canActivate: [AuthGuardService]
   },
   { 
     path: 'wishlist', 
-    component: WishlistComponent
+    component: WishlistComponent,
+    canActivate: [AuthGuardService]
   },
   { 
     path: 'profile', 
     component: ProfileComponent,
-    canActivate: [AuthGuardService]  // Protect this route with auth guard
+    canActivate: [AuthGuardService]
   },
   {
     path: 'profile/orders',

@@ -32,22 +32,32 @@
         </button>
         
         <!-- Wishlist Icon -->
-        <button (click)="navigateToWishlist()" class="relative flex items-center justify-center">
+        <button (click)="navigateToWishlist()" class="relative flex items-center justify-center" [ngClass]="{'opacity-70': !authService.isAuthenticated()}" [title]="authService.isAuthenticated() ? 'View Wishlist' : 'Log in to access wishlist'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
-          <span *ngIf="wishlistItemCount > 0" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          <span *ngIf="wishlistItemCount > 0 && authService.isAuthenticated()" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {{ wishlistItemCount > 9 ? '9+' : wishlistItemCount }}
+          </span>
+          <span *ngIf="!authService.isAuthenticated()" class="absolute -top-2 -right-2 bg-gray-300 text-gray-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
           </span>
         </button>
         
         <!-- Favorites Icon -->
-        <button (click)="navigateToFavourites()" class="relative flex items-center justify-center">
+        <button (click)="navigateToFavourites()" class="relative flex items-center justify-center" [ngClass]="{'opacity-70': !authService.isAuthenticated()}" [title]="authService.isAuthenticated() ? 'View Favourites' : 'Log in to access favourites'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
-          <span *ngIf="favouriteItemCount > 0" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          <span *ngIf="favouriteItemCount > 0 && authService.isAuthenticated()" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {{ favouriteItemCount > 9 ? '9+' : favouriteItemCount }}
+          </span>
+          <span *ngIf="!authService.isAuthenticated()" class="absolute -top-2 -right-2 bg-gray-300 text-gray-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
           </span>
         </button>
         
@@ -180,8 +190,14 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
           Favourites
-          <span *ngIf="favouriteItemCount > 0" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          <span *ngIf="favouriteItemCount > 0 && authService.isAuthenticated()" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {{ favouriteItemCount > 9 ? '9+' : favouriteItemCount }}
+          </span>
+          <span *ngIf="!authService.isAuthenticated()" class="ml-2 text-xs text-gray-500 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Login required
           </span>
         </a>
         <a routerLink="/wishlist" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors flex items-center">
@@ -189,8 +205,14 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
           Wishlist
-          <span *ngIf="wishlistItemCount > 0" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          <span *ngIf="wishlistItemCount > 0 && authService.isAuthenticated()" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {{ wishlistItemCount > 9 ? '9+' : wishlistItemCount }}
+          </span>
+          <span *ngIf="!authService.isAuthenticated()" class="ml-2 text-xs text-gray-500 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Login required
           </span>
         </a>
         <a routerLink="/cart" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors flex items-center">
@@ -255,6 +277,12 @@
     </div>
   </div>
 </header>
+
+<!-- Toast for notifications -->
+<p-toast></p-toast>
+
+<!-- Confirm Dialog -->
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 <!-- Auth Modal -->
 <app-auth-modal 
