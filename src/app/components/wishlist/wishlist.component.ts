@@ -9,39 +9,39 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-favourite',
+  selector: 'app-wishlist',
   standalone: true,
   imports: [CommonModule, RouterModule, ToastModule],
-  templateUrl: './favourite.component.html',
+  templateUrl: './wishlist.component.html',
   providers: [MessageService],
-  styleUrls: ['./favourite.component.scss']
+  styleUrls: ['./wishlist.component.scss']
 })
-export class FavouriteComponent implements OnInit {
-  favouriteItems: Product[] = [];
+export class WishlistComponent implements OnInit {
+  wishlistItems: Product[] = [];
 
   constructor(
-    private favouritesService: FavouritesService,
     private wishlistService: WishlistService,
+    private favouritesService: FavouritesService,
     private cartService: CartService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    this.loadFavouriteItems();
+    this.loadWishlistItems();
   }
 
-  loadFavouriteItems(): void {
-    this.favouritesService.getFavouriteItems().subscribe(items => {
-      this.favouriteItems = items;
+  loadWishlistItems(): void {
+    this.wishlistService.getWishlistItems().subscribe(items => {
+      this.wishlistItems = items;
     });
   }
 
-  removeFromFavourites(productId: string): void {
-    this.favouritesService.removeFromFavourites(productId);
+  removeFromWishlist(productId: string): void {
+    this.wishlistService.removeFromWishlist(productId);
     this.messageService.add({
       severity: 'success',
-      summary: 'Removed from Favourites',
-      detail: 'Item has been removed from your favourites'
+      summary: 'Removed from Wishlist',
+      detail: 'Item has been removed from your wishlist'
     });
   }
 
@@ -54,12 +54,12 @@ export class FavouriteComponent implements OnInit {
     });
   }
 
-  addToWishlist(product: Product): void {
-    this.wishlistService.addToWishlist(product);
+  addToFavourites(product: Product): void {
+    this.favouritesService.addToFavourites(product);
     this.messageService.add({
       severity: 'success',
-      summary: 'Added to Wishlist',
-      detail: `${product.name} has been added to your wishlist for later purchase.`
+      summary: 'Added to Favourites',
+      detail: `${product.name} has been added to your personal favourites.`
     });
   }
 

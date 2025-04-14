@@ -5,6 +5,8 @@ import { AuthModalService } from '../../../services/auth-modal.service';
 import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 import { AuthService } from '../../../services/auth.service';
 import { CartService } from '../../../services/cart.service';
+import { WishlistService } from '../../../services/wishlist.service';
+import { FavouritesService } from '../../../services/favourites.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
@@ -29,17 +31,29 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   isMobileMenuOpen = false;
   cartItemCount = 0;
+  wishlistItemCount = 0;
+  favouriteItemCount = 0;
   
   constructor(
     public authModalService: AuthModalService,
     public authService: AuthService,
     private cartService: CartService,
+    private wishlistService: WishlistService,
+    private favouritesService: FavouritesService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.cartService.getCartItemsCount().subscribe(count => {
       this.cartItemCount = count;
+    });
+    
+    this.wishlistService.getWishlistItemsCount().subscribe(count => {
+      this.wishlistItemCount = count;
+    });
+    
+    this.favouritesService.getFavouriteItemsCount().subscribe(count => {
+      this.favouriteItemCount = count;
     });
   }
 
@@ -89,6 +103,22 @@ export class HeaderComponent implements OnInit {
 
   navigateToCart(): void {
     this.router.navigate(['/cart']);
+    // Close mobile menu if open
+    if (this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+    }
+  }
+  
+  navigateToWishlist(): void {
+    this.router.navigate(['/wishlist']);
+    // Close mobile menu if open
+    if (this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+    }
+  }
+  
+  navigateToFavourites(): void {
+    this.router.navigate(['/favourite']);
     // Close mobile menu if open
     if (this.isMobileMenuOpen) {
       this.isMobileMenuOpen = false;

@@ -4,6 +4,7 @@ import { CataloguePageComponent } from './components/catalogue/catalogue-page.co
 import { FashionPageComponent } from './components/fashion/fashion-page.component';
 import { LifestyleComponent } from './components/lifestyle/lifestyle.component';
 import { FavouriteComponent } from './components/favourite/favourite.component';
+import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { AuthGuardService } from './services/auth-guard.service';
 
 // Import footer page components
@@ -24,8 +25,11 @@ export const routes: Routes = [
   { path: 'lifestyle', component: LifestyleComponent },
   { 
     path: 'favourite', 
-    component: FavouriteComponent,
-    canActivate: [AuthGuardService]  // Protect this route with auth guard
+    component: FavouriteComponent
+  },
+  { 
+    path: 'wishlist', 
+    component: WishlistComponent
   },
   { 
     path: 'profile', 

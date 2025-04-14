@@ -2,8 +2,8 @@
 <section class="bg-black text-white py-16">
   <div class="container mx-auto px-4">
     <div class="max-w-3xl mx-auto text-center">
-      <h1 class="text-5xl font-black mb-6">MY FAVOURITES</h1>
-      <p class="text-xl text-[#8E8E8E]">Your personal collection of items you love</p>
+      <h1 class="text-5xl font-black mb-6">MY WISHLIST</h1>
+      <p class="text-xl text-[#8E8E8E]">Items you've saved for future purchase</p>
     </div>
   </div>
 </section>
@@ -11,26 +11,26 @@
 <!-- Toast for notifications -->
 <p-toast></p-toast>
 
-<!-- Favourite Items -->
+<!-- Wishlist Items -->
 <section class="py-16 bg-white">
   <div class="container mx-auto px-4">
-    <div *ngIf="favouriteItems.length === 0" class="text-center py-12">
-      <h2 class="text-2xl font-medium mb-4">Your favourites list is empty</h2>
-      <p class="text-[#8E8E8E] mb-8">Browse our collections and add items you love</p>
+    <div *ngIf="wishlistItems.length === 0" class="text-center py-12">
+      <h2 class="text-2xl font-medium mb-4">Your wishlist is empty</h2>
+      <p class="text-[#8E8E8E] mb-8">Save items for later purchase by clicking the wishlist icon</p>
       <a routerLink="/catalogue" class="bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors">
         Explore Catalogue
       </a>
     </div>
     
-    <div *ngIf="favouriteItems.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div *ngFor="let product of favouriteItems" class="bg-[#F9F9F9] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div *ngIf="wishlistItems.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let product of wishlistItems" class="bg-[#F9F9F9] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
         <div class="relative h-[300px] overflow-hidden">
           <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-full object-cover">
           <div class="absolute top-4 right-4">
             <button 
-              (click)="removeFromFavourites(product.id)" 
+              (click)="removeFromWishlist(product.id)" 
               class="p-2 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors"
-              title="Remove from favourites"
+              title="Remove from wishlist"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -72,13 +72,13 @@
               Add to Cart
             </button>
             <button 
-              (click)="addToWishlist(product)"
+              (click)="addToFavourites(product)"
               class="border border-black font-medium py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors flex items-center"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              To Wishlist
+              To Favourites
             </button>
           </div>
           <div *ngIf="product.colors.length > 0" class="flex justify-end space-x-1 mt-3">
@@ -97,45 +97,10 @@
 </section>
 
 <!-- Continue Shopping -->
-<section *ngIf="favouriteItems.length > 0" class="py-16 bg-[#F9F9F9] text-center">
+<section *ngIf="wishlistItems.length > 0" class="py-16 bg-[#F9F9F9] text-center">
   <div class="container mx-auto px-4">
     <a routerLink="/catalogue" class="inline-block bg-black text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-80 transition-colors">
       Continue Shopping
     </a>
-  </div>
-</section>
-
-<!-- Related Items -->
-<section class="py-16 bg-[#F9F9F9]">
-  <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-12 text-center text-[#8E8E8E]">You Might Also Like</h2>
-    
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="group">
-        <div class="bg-white rounded-2xl overflow-hidden mb-4 aspect-square relative">
-          <img src="images/favourite/related1.jpg" alt="Sustainable Materials Guide" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-            <button class="bg-white text-black font-medium py-2 px-6 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
-              Quick View
-            </button>
-          </div>
-        </div>
-        <h3 class="text-[#8E8E8E] font-medium text-lg mb-1">Sustainable Materials Guide</h3>
-        <p class="text-[#8E8E8E]">$19.99</p>
-      </div>
-      
-      <div class="group">
-        <div class="bg-white rounded-2xl overflow-hidden mb-4 aspect-square relative">
-          <img src="images/favourite/related2.jpg" alt="Fashion Styling Course" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-            <button class="bg-white text-black font-medium py-2 px-6 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
-              Quick View
-            </button>
-          </div>
-        </div>
-        <h3 class="text-[#8E8E8E] font-medium text-lg mb-1">Fashion Styling Course</h3>
-        <p class="text-[#8E8E8E]">$49.99</p>
-      </div>
-    </div>
   </div>
 </section> 

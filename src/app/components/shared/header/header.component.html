@@ -14,7 +14,8 @@
           <li><a routerLink="/catalogue" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Catalogue</a></li>
           <li><a routerLink="/fashion" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Fashion</a></li>
           <li><a routerLink="/lifestyle" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Lifestyle</a></li>
-          <li><a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Favourite</a></li>
+          <li><a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Favourites</a></li>
+          <li><a routerLink="/wishlist" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Wishlist</a></li>
         </ul>
       </nav>
       
@@ -27,6 +28,26 @@
           </svg>
           <span *ngIf="cartItemCount > 0" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {{ cartItemCount > 9 ? '9+' : cartItemCount }}
+          </span>
+        </button>
+        
+        <!-- Wishlist Icon -->
+        <button (click)="navigateToWishlist()" class="relative flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          <span *ngIf="wishlistItemCount > 0" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ wishlistItemCount > 9 ? '9+' : wishlistItemCount }}
+          </span>
+        </button>
+        
+        <!-- Favorites Icon -->
+        <button (click)="navigateToFavourites()" class="relative flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          <span *ngIf="favouriteItemCount > 0" class="absolute -top-2 -right-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ favouriteItemCount > 9 ? '9+' : favouriteItemCount }}
           </span>
         </button>
         
@@ -154,7 +175,24 @@
         <a routerLink="/catalogue" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Catalogue</a>
         <a routerLink="/fashion" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Fashion</a>
         <a routerLink="/lifestyle" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Lifestyle</a>
-        <a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors">Favourite</a>
+        <a routerLink="/favourite" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          Favourites
+          <span *ngIf="favouriteItemCount > 0" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ favouriteItemCount > 9 ? '9+' : favouriteItemCount }}
+          </span>
+        </a>
+        <a routerLink="/wishlist" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          Wishlist
+          <span *ngIf="wishlistItemCount > 0" class="ml-2 bg-[#EBD96B] text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ wishlistItemCount > 9 ? '9+' : wishlistItemCount }}
+          </span>
+        </a>
         <a routerLink="/cart" routerLinkActive="active" class="text-black hover:text-[#EBD96B] transition-colors flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
