@@ -7,6 +7,7 @@ export interface Product {
   category: string;
   subCategory: string;
   imageUrl: string;
+  images: string[];
   colors: string[];
   sizes: string[];
   tags: string[];
@@ -34,4 +35,31 @@ export interface FilterOption {
   label: string;
   value: string;
   count?: number;
+}
+
+export interface ProductComment {
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  rating: number;
+  comment: string;
+  date: Date;
+  isVerifiedPurchase: boolean;
+  helpful: number;
+  replies?: ProductCommentReply[];
+  imageAttachments?: string[];
+}
+
+export interface ProductCommentReply {
+  id: string;
+  commentId: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  reply: string;
+  date: Date;
+  isAdmin: boolean;
+  imageAttachments?: string[];
 } 

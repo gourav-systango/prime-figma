@@ -39,12 +39,43 @@
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <!-- Filters Column -->
         <div class="lg:col-span-1">
-          <app-product-filters></app-product-filters>
+          <app-product-filters 
+            [currentCategory]="currentCategory" 
+            (filterChange)="handleFilterChange($event)">
+          </app-product-filters>
         </div>
         
         <!-- Products Grid -->
         <div class="lg:col-span-3">
-          <app-product-list [products]="products"></app-product-list>
+          <!-- Results counter -->
+          <div class="flex justify-between items-center mb-6">
+            <div class="text-[#7F7F7F]">
+              <span class="font-medium text-black">{{ products.length }}</span> products found
+              <span *ngIf="currentFilters && (currentFilters.colors.length || currentFilters.sizes.length || currentFilters.subCategories.length)">
+                (filtered)
+              </span>
+            </div>
+            
+            <div *ngIf="products.length === 0 && !isLoading" class="text-amber-600">
+              No products match your selected filters. Try adjusting your criteria.
+            </div>
+          </div>
+          
+          <!-- Loading indicator -->
+          <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+            <p-progressSpinner 
+              styleClass="w-12 h-12" 
+              strokeWidth="4" 
+              fill="var(--surface-ground)" 
+              animationDuration=".5s"
+            ></p-progressSpinner>
+            <span class="ml-4 text-gray-600">Loading products...</span>
+          </div>
+          
+          <!-- Product list (only visible when not loading) -->
+          <div [class.hidden]="isLoading">
+            <app-product-list [products]="products"></app-product-list>
+          </div>
         </div>
       </div>
     </div>

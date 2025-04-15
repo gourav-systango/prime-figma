@@ -123,16 +123,25 @@ export class CartService {
     this.cartItems.next(updatedItems);
   }
 
-  // Update cart item options like color and size
-  updateCartItemOptions(itemId: string, color?: string, size?: string): void {
+  // Update item size
+  updateItemSize(itemId: string, size: string): void {
     const currentItems = this.cartItems.getValue();
     const updatedItems = currentItems.map(item => {
       if (item.id === itemId) {
-        return { 
-          ...item, 
-          color: color !== undefined ? color : item.color,
-          size: size !== undefined ? size : item.size
-        };
+        return { ...item, size };
+      }
+      return item;
+    });
+    
+    this.cartItems.next(updatedItems);
+  }
+
+  // Update item color
+  updateItemColor(itemId: string, color: string): void {
+    const currentItems = this.cartItems.getValue();
+    const updatedItems = currentItems.map(item => {
+      if (item.id === itemId) {
+        return { ...item, color };
       }
       return item;
     });

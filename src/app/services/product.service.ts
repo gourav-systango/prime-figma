@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Product, ProductFilters } from '../interfaces/product.interface';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,11 @@ export class ProductService {
       category: 'accessories',
       subCategory: 'watches',
       imageUrl: 'images/products/product1.jpg',
+      images: [
+        'images/products/product1.jpg',
+        'images/products/product2.jpg',
+        'images/products/product3.jpg'
+      ],
       colors: ['#000000', '#8B4513', '#A52A2A'],
       sizes: [],
       tags: ['luxury', 'formal', 'business'],
@@ -34,6 +40,11 @@ export class ProductService {
       category: 'accessories',
       subCategory: 'watches',
       imageUrl: 'images/products/product2.jpg',
+      images: [
+        'images/products/product2.jpg',
+        'images/products/product4.jpg',
+        'images/products/product1.jpg'
+      ],
       colors: ['#8B4513'],
       sizes: [],
       tags: ['luxury', 'premium', 'gift'],
@@ -51,6 +62,11 @@ export class ProductService {
       category: 'mens-clothing',
       subCategory: 'jeans',
       imageUrl: 'images/products/product3.jpg',
+      images: [
+        'images/products/product3.jpg',
+        'images/products/product1.jpg',
+        'images/products/product4.jpg'
+      ],
       colors: ['#4169E1'],
       sizes: ['S', 'M', 'L', 'XL'],
       tags: ['casual', 'denim', 'streetwear'],
@@ -69,6 +85,11 @@ export class ProductService {
       category: 'mens-clothing',
       subCategory: 'suits',
       imageUrl: 'images/products/product4.jpg',
+      images: [
+        'images/products/product4.jpg',
+        'images/products/product2.jpg',
+        'images/products/product3.jpg'
+      ],
       colors: ['#000000', '#1F1F1F'],
       sizes: ['S', 'M', 'L', 'XL', 'XXL'],
       tags: ['business', 'formal', 'office'],
@@ -86,6 +107,11 @@ export class ProductService {
       category: 'womens-clothing',
       subCategory: 'dresses',
       imageUrl: 'images/products/product1.jpg',
+      images: [
+        'images/products/product1.jpg',
+        'images/products/product3.jpg',
+        'images/products/product2.jpg'
+      ],
       colors: ['#FFB6C1', '#87CEFA'],
       sizes: ['XS', 'S', 'M', 'L'],
       tags: ['summer', 'casual', 'floral'],
@@ -103,6 +129,11 @@ export class ProductService {
       category: 'kids-collection',
       subCategory: 't-shirts',
       imageUrl: 'images/products/product2.jpg',
+      images: [
+        'images/products/product2.jpg',
+        'images/products/product4.jpg',
+        'images/products/product1.jpg'
+      ],
       colors: ['#FF5733', '#33FF57', '#3357FF'],
       sizes: ['3-4Y', '5-6Y', '7-8Y'],
       tags: ['kids', 'casual', 'comfortable'],
@@ -120,6 +151,11 @@ export class ProductService {
       category: 'footwear',
       subCategory: 'boots',
       imageUrl: 'images/products/product3.jpg',
+      images: [
+        'images/products/product3.jpg',
+        'images/products/product1.jpg',
+        'images/products/product4.jpg'
+      ],
       colors: ['#000000', '#8B4513'],
       sizes: ['36', '37', '38', '39', '40', '41'],
       tags: ['winter', 'leather', 'comfortable'],
@@ -138,6 +174,11 @@ export class ProductService {
       category: 'sale-items',
       subCategory: 'outerwear',
       imageUrl: 'images/products/product4.jpg',
+      images: [
+        'images/products/product4.jpg',
+        'images/products/product2.jpg',
+        'images/products/product3.jpg'
+      ],
       colors: ['#000000', '#1F1F1F', '#808080'],
       sizes: ['S', 'M', 'XL'],
       tags: ['winter', 'clearance', 'sale'],
@@ -184,14 +225,6 @@ export class ProductService {
       );
     }
     
-    // Filter by price range
-    if (filters.priceRange && (filters.priceRange.min > 0 || filters.priceRange.max < Number.MAX_VALUE)) {
-      filteredProducts = filteredProducts.filter(product => {
-        const price = product.discountedPrice || product.price;
-        return price >= filters.priceRange.min && price <= filters.priceRange.max;
-      });
-    }
-    
     // Filter by colors
     if (filters.colors && filters.colors.length > 0) {
       filteredProducts = filteredProducts.filter(product => 
@@ -218,7 +251,8 @@ export class ProductService {
       filteredProducts = this.sortProducts(filteredProducts, filters.sortBy);
     }
     
-    return of(filteredProducts);
+    // Add a small delay to show the loading spinner
+    return of(filteredProducts).pipe(delay(300));
   }
   
   private sortProducts(products: Product[], sortBy: string): Product[] {

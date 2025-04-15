@@ -1,6 +1,7 @@
 <div class="container mx-auto px-4 py-12" *ngIf="product">
   <!-- Toast notifications -->
   <p-toast></p-toast>
+  <p-confirmDialog [style]="{width: '450px'}" [baseZIndex]="10000"></p-confirmDialog>
   
   <!-- Breadcrumb -->
   <div class="mb-6">
@@ -14,28 +15,55 @@
   </div>
   
   <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-    <!-- Product Image -->
-    <div class="relative aspect-square bg-[#F4F6F5] rounded-xl overflow-hidden">
-      <img 
-        [src]="product.imageUrl" 
-        [alt]="product.name" 
-        class="w-full h-full object-cover"
+    <!-- Product Image Gallery -->
+    <div class="relative">
+      <!-- Primary Image Display with Galleria -->
+      <p-galleria 
+        [value]="images" 
+        [responsiveOptions]="responsiveOptions" 
+        [containerStyle]="{'max-width': '100%'}" 
+        [numVisible]="5" 
+        [circular]="true"
+        [showItemNavigators]="true"
+        [showThumbnails]="true"
+        [(activeIndex)]="activeIndex"
       >
+        <ng-template pTemplate="item" let-item>
+          <div class="aspect-square overflow-hidden flex items-center justify-center">
+            <img 
+              [src]="item.itemImageSrc" 
+              [alt]="item.alt" 
+              class="w-full h-full object-contain" 
+              (click)="openZoom(item.itemImageSrc)"
+            />
+            
+            <!-- Badges -->
+            <div class="absolute top-4 left-4 flex flex-col gap-2">
+              <span 
+                *ngIf="product.isNew" 
+                class="bg-[#EBD96B] text-black text-xs font-bold px-3 py-1 rounded-full"
+              >
+                NEW
+              </span>
+              <span 
+                *ngIf="getDiscountPercentage(product) > 0" 
+                class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full"
+              >
+                -{{ getDiscountPercentage(product) }}%
+              </span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="thumbnail" let-item>
+          <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded-md">
+            <img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="w-full h-full object-cover" />
+          </div>
+        </ng-template>
+      </p-galleria>
       
-      <!-- Badges -->
-      <div class="absolute top-4 left-4 flex flex-col gap-2">
-        <span 
-          *ngIf="product.isNew" 
-          class="bg-[#EBD96B] text-black text-xs font-bold px-3 py-1 rounded-full"
-        >
-          NEW
-        </span>
-        <span 
-          *ngIf="getDiscountPercentage(product) > 0" 
-          class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full"
-        >
-          -{{ getDiscountPercentage(product) }}%
-        </span>
+      <!-- Zoom hint text -->
+      <div class="text-center mt-2 text-sm text-gray-500">
+        <span>Click on image to zoom</span>
       </div>
     </div>
     
@@ -62,31 +90,52 @@
       
       <!-- Colors -->
       <div *ngIf="product.colors.length > 0" class="mb-6">
-        <h3 class="text-sm font-medium mb-2">COLOR</h3>
-        <div class="flex gap-2">
+        <div class="flex justify-between mb-2">
+          <h3 class="text-sm font-medium">COLOR</h3>
+          <span *ngIf="selectedColor" class="text-sm text-[#8E8E8E]">Selected: <span class="font-medium">{{ selectedColor }}</span></span>
+        </div>
+        <div class="flex flex-wrap gap-2">
           <div 
             *ngFor="let color of product.colors"
-            class="w-8 h-8 rounded-full border-2 cursor-pointer"
+            class="w-10 h-10 rounded-full border-2 cursor-pointer relative flex items-center justify-center"
             [style.background-color]="color"
             [ngClass]="{'border-gray-400': color !== selectedColor, 'border-black': color === selectedColor}"
             (click)="selectColor(color)"
-          ></div>
+          >
+            <span *ngIf="color === selectedColor" class="absolute inset-0 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
       
-      <!-- Sizes -->
+      <!-- Sizes with Required Indicator -->
       <div *ngIf="product.sizes.length > 0" class="mb-8">
-        <h3 class="text-sm font-medium mb-2">SIZE</h3>
+        <div class="flex justify-between mb-2">
+          <h3 class="text-sm font-medium flex items-center">
+            SIZE
+            <span class="text-red-500 ml-1">*</span>
+          </h3>
+          <span *ngIf="selectedSize" class="text-sm text-[#8E8E8E]">Selected: <span class="font-medium">{{ selectedSize }}</span></span>
+        </div>
         <div class="flex flex-wrap gap-2">
           <div 
             *ngFor="let size of product.sizes"
-            class="min-w-[40px] h-10 flex items-center justify-center px-3 border rounded cursor-pointer"
-            [ngClass]="{'border-black bg-black text-white': size === selectedSize, 'border-gray-300 hover:border-black': size !== selectedSize}"
+            class="min-w-[40px] h-10 flex items-center justify-center px-3 border rounded cursor-pointer transition-all"
+            [ngClass]="{
+              'border-black bg-black text-white': size === selectedSize, 
+              'border-gray-300 hover:border-black': size !== selectedSize
+            }"
             (click)="selectSize(size)"
           >
             {{ size }}
           </div>
         </div>
+        <p *ngIf="!selectedSize" class="text-xs text-red-500 mt-1">
+          Please select a size
+        </p>
       </div>
       
       <!-- Quantity -->
@@ -112,7 +161,7 @@
       
       <!-- Add to Cart -->
       <button
-        (click)="addToCart()"
+        (click)="confirmAddToCart()"
         class="bg-black text-white w-full py-3 rounded-lg hover:bg-gray-800 transition-colors mb-4"
       >
         Add to Cart
@@ -120,7 +169,7 @@
       
       <!-- Buy Now -->
       <button
-        (click)="buyNow()"
+        (click)="confirmBuyNow()"
         class="bg-[#EBD96B] text-black w-full py-3 rounded-lg hover:bg-[#e0c952] transition-colors mb-4 font-medium"
       >
         Buy Now
@@ -167,4 +216,470 @@
       </div>
     </div>
   </div>
-</div> 
+  
+  <!-- Product Comments Section -->
+  <div class="mt-16">
+    <p-tabView>
+      <p-tabPanel header="Reviews & Comments ({{ comments.length }})">
+        <!-- Comments Section -->
+        <div class="py-6 comments-section">
+          <!-- Loading Spinner -->
+          <div *ngIf="isLoadingComments" class="flex justify-center py-8">
+            <p-progressSpinner></p-progressSpinner>
+          </div>
+          
+          <!-- No Comments Message -->
+          <div *ngIf="!isLoadingComments && comments.length === 0" class="text-center py-8">
+            <p class="text-black font-medium">No reviews yet. Be the first to review this product!</p>
+          </div>
+          
+          <!-- Add a New Comment Form -->
+          <div class="mb-8 comment-form">
+            <h3 class="text-2xl font-semibold mb-4 text-black">Write a Review</h3>
+            
+            <form [formGroup]="newCommentForm" (ngSubmit)="submitComment()">
+              <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-black">Your Rating</label>
+                <p-rating formControlName="rating" [cancel]="false"></p-rating>
+              </div>
+              
+              <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-black">Your Review</label>
+                <textarea 
+                  pInputTextarea 
+                  formControlName="comment" 
+                  rows="4" 
+                  placeholder="Share your experience with this product..."
+                  class="w-full text-black"
+                ></textarea>
+                <small *ngIf="newCommentForm.get('comment')?.invalid && newCommentForm.get('comment')?.touched" class="text-red-600 font-medium">
+                  Please enter a comment with at least 10 characters
+                </small>
+              </div>
+              
+              <!-- Image Upload Section -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-black">Add Photos (Optional)</label>
+                <p-fileUpload
+                  #commentFileUpload
+                  mode="basic"
+                  chooseLabel="Choose Images"
+                  [auto]="false"
+                  accept="image/*"
+                  [maxFileSize]="1000000"
+                  [multiple]="true"
+                  (onSelect)="onCommentFileSelect($event)"
+                  styleClass="p-button-outlined"
+                ></p-fileUpload>
+                
+                <div *ngIf="selectedCommentFiles.length > 0" class="image-preview-container mt-3">
+                  <div *ngFor="let file of selectedCommentFiles; let i = index" class="image-preview">
+                    <img [src]="getFilePreviewUrl(file)" [alt]="file.name" />
+                    <div class="remove-image" (click)="removeCommentFile(i)">
+                      <i class="pi pi-times"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Upload Progress -->
+              <div *ngIf="isUploading" class="upload-progress mb-4">
+                <p-progressBar [value]="uploadProgress"></p-progressBar>
+                <small class="block mt-1 text-black">Uploading images... {{ uploadProgress }}%</small>
+              </div>
+              
+              <button 
+                class="w-full md:w-auto p-button bg-blue-600 hover:bg-blue-700"
+                type="submit" 
+                [disabled]="newCommentForm.invalid || isUploading"
+              >
+                Submit Review
+              </button>
+            </form>
+          </div>
+          
+          <!-- Comments List -->
+          <div>
+            <!-- Comment Item -->
+            <div *ngFor="let comment of comments" class="comment-item">
+              <div class="comment-header">
+                <div class="flex items-center">
+                  <div class="mr-3">
+                    <p-avatar 
+                      [image]="comment.userAvatar" 
+                      icon="pi pi-user" 
+                      size="large" 
+                      [style]="{'background-color':'#2196F3', 'color': '#ffffff'}"
+                      shape="circle"
+                    ></p-avatar>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-black text-lg">{{ comment.userName }}</h4>
+                    <div class="flex items-center flex-wrap gap-2 mt-1">
+                      <p-rating [ngModel]="comment.rating" [readonly]="true" [cancel]="false"></p-rating>
+                      <span class="text-sm font-medium text-gray-700">{{ formatDate(comment.date) }}</span>
+                      <span *ngIf="comment.isVerifiedPurchase" class="verified-badge">
+                        Verified Purchase
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button 
+                    class="p-button p-button-text p-button-sm" 
+                    (click)="markHelpful(comment.id)"
+                  >
+                    <span class="pi pi-thumbs-up"></span>
+                    <span *ngIf="comment.helpful > 0" class="ml-1 text-black font-medium">{{ comment.helpful }}</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="comment-content">
+                <p class="text-black">{{ comment.comment }}</p>
+              </div>
+              
+              <!-- Comment Images -->
+              <div *ngIf="comment.imageAttachments && comment.imageAttachments.length > 0" class="comment-images">
+                <p-galleria 
+                  *ngIf="comment.imageAttachments.length > 1"
+                  [value]="comment.imageAttachments"
+                  [responsiveOptions]="responsiveOptions"
+                  [numVisible]="3"
+                  [circular]="true"
+                  [showItemNavigators]="true"
+                  [showThumbnails]="true"
+                  containerClass="comment-gallery"
+                >
+                  <ng-template pTemplate="item" let-item>
+                    <div class="flex justify-center">
+                      <p-image [src]="item" [alt]="'User review image'" [preview]="true"></p-image>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="thumbnail" let-item>
+                    <div class="flex-shrink-0 w-16 h-16 overflow-hidden">
+                      <img [src]="item" class="w-full h-full object-cover" />
+                    </div>
+                  </ng-template>
+                </p-galleria>
+                
+                <!-- Single image display -->
+                <p-image 
+                  *ngIf="comment.imageAttachments.length === 1"
+                  [src]="comment.imageAttachments[0]" 
+                  [alt]="'User review image'"
+                  [preview]="true"
+                  [style]="{'max-height': '200px'}"
+                ></p-image>
+              </div>
+              
+              <!-- Replies to this comment -->
+              <div *ngIf="comment.replies && comment.replies.length > 0" class="comment-replies">
+                <div *ngFor="let reply of comment.replies" class="reply-item">
+                  <div class="reply-header">
+                    <div class="mr-2">
+                      <p-avatar 
+                        [image]="reply.userAvatar" 
+                        icon="pi pi-user" 
+                        [style]="{'background-color': reply.isAdmin ? '#FF9800' : '#9C27B0', 'color': '#ffffff'}"
+                        shape="circle"
+                      ></p-avatar>
+                    </div>
+                    <div>
+                      <span class="font-medium text-black">{{ reply.userName }}</span>
+                      <span *ngIf="reply.isAdmin" class="ml-2 admin-badge">
+                        Store Admin
+                      </span>
+                      <div class="text-xs font-medium text-gray-700">{{ formatDate(reply.date) }}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="reply-content">
+                    <p class="text-black">{{ reply.reply }}</p>
+                  </div>
+                  
+                  <!-- Reply Images -->
+                  <div *ngIf="reply.imageAttachments && reply.imageAttachments.length > 0" class="reply-images">
+                    <p-galleria 
+                      *ngIf="reply.imageAttachments.length > 1"
+                      [value]="reply.imageAttachments"
+                      [responsiveOptions]="responsiveOptions"
+                      [numVisible]="3"
+                      [circular]="true"
+                      [showItemNavigators]="true"
+                      [showThumbnails]="true"
+                      containerClass="comment-gallery"
+                    >
+                      <ng-template pTemplate="item" let-item>
+                        <div class="flex justify-center">
+                          <p-image [src]="item" [alt]="'Reply image'" [preview]="true"></p-image>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="thumbnail" let-item>
+                        <div class="flex-shrink-0 w-16 h-16 overflow-hidden">
+                          <img [src]="item" class="w-full h-full object-cover" />
+                        </div>
+                      </ng-template>
+                    </p-galleria>
+                    
+                    <!-- Single image display -->
+                    <p-image 
+                      *ngIf="reply.imageAttachments.length === 1"
+                      [src]="reply.imageAttachments[0]" 
+                      [alt]="'Reply image'"
+                      [preview]="true"
+                      [style]="{'max-height': '150px'}"
+                    ></p-image>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Reply form -->
+              <div *ngIf="activeReplyCommentId === comment.id" class="reply-form">
+                <form [formGroup]="replyForm" (ngSubmit)="submitReply(comment.id)">
+                  <textarea 
+                    pInputTextarea 
+                    formControlName="reply" 
+                    rows="3" 
+                    placeholder="Write a reply..."
+                    class="w-full mb-2 text-black"
+                  ></textarea>
+                  
+                  <!-- Reply Image Upload -->
+                  <div class="mb-3">
+                    <p-fileUpload
+                      #replyFileUpload
+                      mode="basic"
+                      chooseLabel="Add Photo"
+                      [auto]="false"
+                      accept="image/*"
+                      [maxFileSize]="1000000"
+                      [multiple]="true"
+                      (onSelect)="onReplyFileSelect($event)"
+                      styleClass="p-button-outlined p-button-sm"
+                    ></p-fileUpload>
+                    
+                    <div *ngIf="selectedReplyFiles.length > 0" class="image-preview-container mt-3">
+                      <div *ngFor="let file of selectedReplyFiles; let i = index" class="image-preview">
+                        <img [src]="getFilePreviewUrl(file)" [alt]="file.name" />
+                        <div class="remove-image" (click)="removeReplyFile(i)">
+                          <i class="pi pi-times"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Upload Progress -->
+                  <div *ngIf="isUploading" class="upload-progress mb-3">
+                    <p-progressBar [value]="uploadProgress"></p-progressBar>
+                    <small class="block mt-1 text-black">Uploading images... {{ uploadProgress }}%</small>
+                  </div>
+                  
+                  <div class="flex justify-end gap-2">
+                    <button 
+                      type="button"
+                      class="p-button p-button-outlined p-button-sm"
+                      (click)="cancelReply()"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit"
+                      class="p-button p-button-sm bg-blue-600 hover:bg-blue-700"
+                      [disabled]="replyForm.invalid || isUploading"
+                    >
+                      Post Reply
+                    </button>
+                  </div>
+                </form>
+              </div>
+              
+              <!-- Reply Button -->
+              <div *ngIf="activeReplyCommentId !== comment.id" class="mt-2">
+                <button 
+                  class="p-button p-button-text p-button-sm text-blue-600 hover:text-blue-700"
+                  (click)="openReplyForm(comment.id)"
+                >
+                  <span class="pi pi-reply mr-1"></span>
+                  <span class="font-medium">Reply</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      
+      <p-tabPanel header="Product Details">
+        <div class="py-6">
+          <h3 class="text-xl font-medium mb-4">Specifications</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <table class="w-full">
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-3 text-sm font-medium text-gray-500">Category</td>
+                    <td class="py-3">{{ product.category | titlecase }}</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 text-sm font-medium text-gray-500">Sub-Category</td>
+                    <td class="py-3">{{ product.subCategory | titlecase }}</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 text-sm font-medium text-gray-500">Materials</td>
+                    <td class="py-3">Premium Quality</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <table class="w-full">
+                <tbody>
+                  <tr class="border-b">
+                    <td class="py-3 text-sm font-medium text-gray-500">Available Colors</td>
+                    <td class="py-3">{{ product.colors.length }}</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 text-sm font-medium text-gray-500">Available Sizes</td>
+                    <td class="py-3">{{ product.sizes.join(', ') }}</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td class="py-3 text-sm font-medium text-gray-500">Tags</td>
+                    <td class="py-3">{{ product.tags.join(', ') | titlecase }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="mt-8">
+            <h3 class="text-xl font-medium mb-4">Product Description</h3>
+            <div class="prose max-w-none">
+              <p>{{ product.description }}</p>
+              <p class="mt-4">
+                This premium product is designed to provide maximum comfort and style. 
+                Our quality assurance team ensures that each item meets our high standards 
+                before it leaves our facility.
+              </p>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      
+      <p-tabPanel header="Shipping & Returns">
+        <div class="py-6">
+          <h3 class="text-xl font-medium mb-4">Shipping Information</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>Free standard shipping on orders over $50</span>
+            </li>
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>Standard shipping: 3-5 business days</span>
+            </li>
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>Express shipping available at checkout</span>
+            </li>
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>International shipping available to select countries</span>
+            </li>
+          </ul>
+          
+          <h3 class="text-xl font-medium mb-4 mt-8">Return Policy</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>30-day return policy for unworn/unused items</span>
+            </li>
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>Items must be returned in original packaging</span>
+            </li>
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>Return shipping fee may apply</span>
+            </li>
+            <li class="flex items-start">
+              <i class="pi pi-check-circle text-green-500 mr-2 mt-1"></i>
+              <span>Exchanges available for different sizes/colors</span>
+            </li>
+          </ul>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+
+<!-- Image Zoom Dialog -->
+<p-dialog 
+  [(visible)]="zoomVisible" 
+  [modal]="true" 
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="zoom-dialog"
+  [style]="{width: '90vw', maxWidth: '1200px'}"
+  [contentStyle]="{overflow: 'hidden'}"
+  (onHide)="resetZoom()"
+>
+  <ng-template pTemplate="header">
+    <span>Image Zoom</span>
+  </ng-template>
+  
+  <div class="zoom-container" 
+    (mousedown)="startDrag($event)"
+    (mousemove)="doDrag($event)"
+    (mouseup)="endDrag()"
+    (mouseleave)="endDrag()"
+    (touchstart)="startDrag($event)"
+    (touchmove)="doDrag($event)"
+    (touchend)="endDrag()"
+  >
+    <img 
+      [src]="zoomImage" 
+      [style.transform]="getZoomTransform()"
+      alt="Zoomed product image"
+      draggable="false"
+    />
+    
+    <div class="zoom-controls">
+      <button (click)="zoomOut()" title="Zoom out">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </button>
+      
+      <button (click)="resetZoom()" title="Reset zoom">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 2v6h6"></path>
+          <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+          <path d="M21 22v-6h-6"></path>
+          <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+        </svg>
+      </button>
+      
+      <button (click)="zoomIn()" title="Zoom in">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="11" y1="8" x2="11" y2="14"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Zoom level indicator -->
+    <div class="zoom-indicator">
+      {{ (zoomLevel * 100).toFixed(0) }}%
+    </div>
+    
+    <!-- Drag hint text when zoomed in -->
+    <div class="drag-hint" *ngIf="zoomLevel > 1">
+      <span>Drag to pan image</span>
+    </div>
+  </div>
+</p-dialog> 

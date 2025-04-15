@@ -9,9 +9,9 @@
     </button>
   </div>
   
-  <p-accordion [multiple]="true" [activeIndex]="[0, 1, 2, 3]">
-    <!-- Categories -->
-    <p-accordionTab header="Categories">
+  <p-accordion [multiple]="true" [activeIndex]="currentCategory ? [0, 1, 2] : [0, 1, 2, 3]">
+    <!-- Categories - Only show when not in a specific category -->
+    <p-accordionTab header="Categories" *ngIf="!currentCategory">
       <div class="flex flex-col gap-3 pt-2">
         <div *ngFor="let option of categoryOptions" class="flex items-center">
           <p-checkbox 
@@ -29,8 +29,11 @@
     </p-accordionTab>
     
     <!-- Subcategories -->
-    <p-accordionTab header="Subcategories">
+    <p-accordionTab header="Category">
       <div class="flex flex-col gap-3 pt-2">
+        <div *ngIf="subCategoryOptions.length === 0" class="text-gray-500 text-sm py-2">
+          No categories available for this section.
+        </div>
         <div *ngFor="let option of subCategoryOptions" class="flex items-center">
           <p-checkbox 
             [(ngModel)]="filters.subCategories" 
@@ -42,25 +45,6 @@
             {{ option.label }}
             <span class="text-[#8E8E8E] ml-1">({{ option.count }})</span>
           </label>
-        </div>
-      </div>
-    </p-accordionTab>
-    
-    <!-- Price Range -->
-    <p-accordionTab header="Price Range">
-      <div class="pt-4 px-2">
-        <p-slider 
-          [(ngModel)]="filters.priceRange" 
-          [range]="true" 
-          [min]="0" 
-          [max]="1000"
-          (onSlideEnd)="updateFilters()"
-          class="mb-6"
-        ></p-slider>
-        
-        <div class="flex justify-between">
-          <span class="text-sm">${{ filters.priceRange.min }}</span>
-          <span class="text-sm">${{ filters.priceRange.max }}</span>
         </div>
       </div>
     </p-accordionTab>
